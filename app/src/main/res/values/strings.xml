@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SUMAI 요약</string>
+
+    <!-- 애드몹 배너 -->
+    <string name="adaptive_banner_ad_unit_id">ca-app-pub-4995049534759533/1932935137</string>
+    <string name="adaptive_banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
+</resources>

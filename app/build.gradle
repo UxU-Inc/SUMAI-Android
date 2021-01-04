@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "co.kr.sumai"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 4
+        versionName "0.1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            // https://developer.android.com/studio/build/shrink-code#enable
+            // 코드 축소, 난독화 및 최적화만 활성화.
+            minifyEnabled true
+
+            // 리소스 축소를 활성화.
+            shrinkResources true
+
+            // 함께 패키지된 기본 ProGuard 규칙 파일을 포함.
+            // R8 configuration files.
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    // https://developer.android.com/studio/build/shrink-code#add-configuration
+    flavorDimensions "version"
+    productFlavors {
+        // flavor1 {}
+        flavor2 {
+            proguardFile 'flavor2-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.gms:play-services-ads:19.6.0'  // 애드몹
+    implementation 'com.google.firebase:firebase-ads:19.6.0'  // firebase ads
+    implementation 'com.google.firebase:firebase-analytics:18.0.0'  // firebase Analytics
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}
