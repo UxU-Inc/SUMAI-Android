@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SUMAI 요약</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_close">drawer_close</string>
 
     <!-- 애드몹 배너 -->
     <string name="adaptive_banner_ad_unit_id">ca-app-pub-4995049534759533/1932935137</string>
