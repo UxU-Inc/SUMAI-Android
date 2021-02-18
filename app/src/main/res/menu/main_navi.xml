@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="홈" />
+        <item
+            android:id="@+id/terms"
+            android:icon="@drawable/ic_baseline_terms_24"
+            android:title="이용약관" />
+        <item
+            android:id="@+id/privacy"
+            android:icon="@drawable/ic_baseline_privacy_tip_24"
+            android:title="개인정보처리방침" />
+        <item
+            android:id="@+id/notice"
+            android:icon="@drawable/ic_baseline_notifications_24"
+            android:title="공지사항" />
+        <item
+            android:id="@+id/sendFeedback"
+            android:icon="@drawable/ic_baseline_send_24"
+            android:title="의견보내기" />
+    </group>
+
+</menu>

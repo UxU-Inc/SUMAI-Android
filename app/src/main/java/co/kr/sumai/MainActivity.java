@@ -1,18 +1,38 @@
 package co.kr.sumai;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -22,19 +42,40 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    private WebView mWebView; // 웹뷰 선언
-    private WebSettings mWebSettings; //웹뷰세팅
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle drawerToggle;
+    Toolbar toolbar;
+
+    ImageButton imageButtonClear;
+    ImageButton imageButtonSummary;
+
+    EditText editTextSummary;
+    TextView textViewSummaryResult;
 
     private FrameLayout adContainerView;
     private AdView adView; // 애드몹 배너
 
     private FirebaseAnalytics mFirebaseAnalytics;
+
+    String ID = "";
+    int record = 1;
 
     //뒤로 버튼 두번 연속 클릭 시 종료
     private long time= 0;
@@ -53,30 +94,13 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        mWebView = (WebView) findViewById(R.id.webView);
 
-        mWebView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
-        mWebSettings = mWebView.getSettings(); //세부 세팅 등록
-        mWebSettings.setJavaScriptEnabled(true); // 웹페이지 자바스클비트 허용 여부
-        mWebSettings.setSupportMultipleWindows(false); // 새창 띄우기 허용 여부
-        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(false); // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
-        mWebSettings.setLoadWithOverviewMode(true); // 메타태그 허용 여부
-        mWebSettings.setUseWideViewPort(true); // 화면 사이즈 맞추기 허용 여부
-        mWebSettings.setSupportZoom(false); // 화면 줌 허용 여부
-        mWebSettings.setBuiltInZoomControls(false); // 화면 확대 축소 허용 여부
-        mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
-        mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
-        mWebSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
+        initLayout();
 
-        mWebView.loadUrl("https://www.sumai.co.kr");  //웹뷰 실행
-        mWebView.setWebChromeClient(new WebChromeClient());  //웹뷰에 크롬 사용 허용//이 부분이 없으면 크롬에서 alert가 뜨지 않음
-        mWebView.setWebViewClient(new WebViewClientClass());  //새창열기 없이 웹뷰 내에서 다시 열기//페이지 이동 원활히 하기위해 사용
-
+        clickEvent();
 
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
 
         // AdMob
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -89,25 +113,171 @@ public class MainActivity extends AppCompatActivity {
         adView.setAdUnitId(getString(R.string.adaptive_banner_ad_unit_id));
         adContainerView.addView(adView);
         loadBanner();
+    }
+
+    private void initLayout() {
+        // toolbar, drawer, navigation Component
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.dl_main_drawer_root);
+        navigationView = (NavigationView) findViewById(R.id.nv_main_navigation_root);
+        drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.drawer_open,
+                R.string.drawer_close
+        );
+        drawerLayout.addDrawerListener(drawerToggle);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
+        // main Component
+        imageButtonClear = (ImageButton) findViewById(R.id.imageButtonClear);
+        imageButtonClear.setVisibility(View.INVISIBLE);
+        imageButtonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextSummary.setText("");
+                imageButtonClear.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        imageButtonSummary = (ImageButton) findViewById(R.id.imageButtonSummary);
+        imageButtonSummary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                summaryRequest(editTextSummary.getText().toString());
+            }
+        });
+
+        editTextSummary = (EditText) findViewById(R.id.editTextSummary);
+        editTextSummary.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // 입력 변화 시
+                if(0 < editTextSummary.getText().toString().length()) {
+                    if(imageButtonClear.getVisibility() == View.INVISIBLE)
+                        imageButtonClear.setVisibility(View.VISIBLE);
+                }
+                else {
+                    textViewSummaryResult.setVisibility(View.INVISIBLE);
+                    if(imageButtonClear.getVisibility() == View.VISIBLE)
+                        imageButtonClear.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // 입력 끝났을 때
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // 입력하기 전
+            }
+        });
+
+        textViewSummaryResult = (TextView) findViewById(R.id.textViewSummaryResult);
+        textViewSummaryResult.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {//뒤로가기 버튼 이벤트
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {//웹뷰에서 뒤로가기 버튼을 누르면 뒤로가짐
-            mWebView.goBack();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+        drawerToggle.getDrawerArrowDrawable().setColor(Color.WHITE);
     }
 
-    private class WebViewClientClass extends WebViewClient {//페이지 이동
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home:
+//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+                break;
+            case R.id.terms:
+//                intent = new Intent(getApplicationContext(), GuideActivity.class);
+//                intent.putExtra("tabs", 1);
+//                startActivity(intent);
+                break;
+            case R.id.privacy:
+//                intent = new Intent(getApplicationContext(), GuideActivity.class);
+//                intent.putExtra("tabs", 2);
+//                startActivity(intent);
+                break;
+            case R.id.notice:
+//                intent = new Intent(getApplicationContext(), GuideActivity.class);
+//                intent.putExtra("tabs", 3);
+//                startActivity(intent);
+                break;
+            case R.id.sendFeedback:
+                sendMail();
+                break;
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return false;
+    }
+
+    private void clickEvent() {
+        // toolbar
+        ImageButton buttonNews = findViewById(R.id.buttonNews);
+        buttonNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://news.sumai.co.kr"));
+                startActivity(intent);
+            }
+        });
+
+        LinearLayout layoutLogin = findViewById(R.id.layoutLogin);
+        layoutLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, LoginActivity);
+//                startActivity(intent);
+            }
+        });
+    }
+
+    private void summaryRequest(String data) {
+
+        Call<SummaryResponse> res = NetRetrofitStore.getInstance().getService().SUMMARY(new SummaryRequest(data, ID, record));
+        res.enqueue(new Callback<SummaryResponse>() {
+            @Override
+            public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
+                textViewSummaryResult.setText(response.body().getSummarize());
+                textViewSummaryResult.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<SummaryResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), call + "\n" + t, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void loadBanner() {
@@ -127,5 +297,27 @@ public class MainActivity extends AppCompatActivity {
 
         int adWidth = (int) (widthPixels / density);
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+    }
+
+    private void sendMail() {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        try {
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"help@sumai.co.kr"});
+
+            emailIntent.setType("text/html");
+            emailIntent.setPackage("com.google.android.gm");
+            if(emailIntent.resolveActivity(getPackageManager())!=null)
+                startActivity(emailIntent);
+
+            startActivity(emailIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            emailIntent.setType("text/html");
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"help@sumai.co.kr"});
+
+            startActivity(Intent.createChooser(emailIntent, "의견 보내기"));
+        }
     }
 }
