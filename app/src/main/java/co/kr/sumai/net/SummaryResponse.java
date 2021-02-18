@@ -1,4 +1,4 @@
-package co.kr.sumai;
+package co.kr.sumai.net;
 
 public class SummaryResponse {
 
