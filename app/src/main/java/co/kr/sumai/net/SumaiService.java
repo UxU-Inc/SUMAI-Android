@@ -11,5 +11,8 @@ public interface SumaiService {
 
     @GET("/api/account/getinfo")
     Call<LoginInforResponse> getInfo();
+
+    @POST("/api/summary/request")
+    Call<SummaryResponse> SUMMARY(@Body SummaryRequest summaryRequest);
 }
 

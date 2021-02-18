@@ -1,6 +1,5 @@
-package co.kr.sumai;
+package co.kr.sumai.net;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -17,9 +16,9 @@ public class NetRetrofitStore {
             .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
             .build();
 
-    RetrofitService service = retrofit.create(RetrofitService.class);
+    SumaiService service = retrofit.create(SumaiService.class);
 
-    public RetrofitService getService() {
+    public SumaiService getService() {
         return service;
     }
 }
