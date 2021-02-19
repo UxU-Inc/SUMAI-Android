@@ -11,18 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FindPasswordActivity"></activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignUpPage1Activity"></activity>
+        <activity android:name=".SignUpPage2Activity" />
+        <activity android:name=".SignUpPage3Activity" />
+        <activity android:name=".FindPasswordActivity" />
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter></activity>
         <activity android:name=".GuideActivity" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity> <!-- 애드몹 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -72,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
         buttonTerms = findViewById(R.id.buttonTerms);
         buttonPrivacy = findViewById(R.id.buttonPrivacy);
 
+        NetRetrofitStore.createNetRetrofit(this);
+
         service = NetRetrofitStore.getInstance().getService();
 
         // get login infor
@@ -141,7 +143,9 @@ public class LoginActivity extends AppCompatActivity {
         buttonSignup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 // SignupActivity로 이동
-                Log.i("Signup", "click");
+                Intent intent = new Intent(getApplicationContext(), SignUpPage1Activity.class);
+                intent.putExtra("infor", new SignUpInfor());
+                startActivity(intent);
             }
         });
 
