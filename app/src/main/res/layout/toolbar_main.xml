@@ -31,6 +31,8 @@
             android:text="요약"
             android:textColor="@android:color/white"
             android:textSize="28sp"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:includeFontPadding="false"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,13 +44,15 @@
             android:layout_height="32dp"
             android:layout_marginEnd="15dp"
             android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toRightOf="@id/textViewLogo"
             app:layout_constraintRight_toLeftOf="@id/layoutLogin"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_featured_play_list_24" />
+            app:srcCompat="@drawable/ic_baseline_featured_play_list_24"
+            tools:targetApi="m" />
 
         <LinearLayout
             android:id="@+id/layoutLogin"
@@ -56,13 +60,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@drawable/style_round"
+            android:foreground="?attr/selectableItemBackground"
             android:padding="5dp"
             android:clickable="true"
             android:focusable="true"
             android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="m">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -79,6 +85,8 @@
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:textSize="14sp"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
                 android:text="로그인" />
         </LinearLayout>
 
