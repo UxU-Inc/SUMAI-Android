@@ -24,6 +24,8 @@
         android:layout_marginTop="10dp"
         android:text="로그인"
         android:textSize="28sp"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView" />
@@ -35,7 +37,9 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:hint="이메일"
-        android:padding="15dp"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
+        android:padding="14dp"
         android:background="@drawable/border"
         app:layout_constraintTop_toBottomOf="@id/textView" />
     <EditText
@@ -45,18 +49,22 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="비밀번호"
-        android:padding="15dp"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
+        android:padding="14dp"
         android:background="@drawable/border"
         app:layout_constraintTop_toBottomOf="@id/editTextEmail" />
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_marginTop="14dp"
-        android:background="@color/colorPrimaryDark"
-        android:padding="12.5dp"
+        android:background="@drawable/rectangle_primary_dark"
+        android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:text="로그인"
@@ -71,6 +79,8 @@
         android:background="@null"
         android:textSize="13sp"
         android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
         android:text="비밀번호 찾기"
         app:layout_constraintEnd_toStartOf="@id/buttonSignup"
         app:layout_constraintTop_toBottomOf="@id/buttonLogin" />
@@ -83,6 +93,8 @@
         android:background="@null"
         android:textSize="13sp"
         android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
         android:text="계정 만들기"
         app:layout_constraintTop_toBottomOf="@id/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -96,6 +108,7 @@
         android:layout_marginBottom="1dp"
         android:layout_marginTop="20dp"
         android:background="#fafafa"
+        android:foreground="?attr/selectableItemBackground"
         android:id="@+id/buttonLoginGoogle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,6 +122,9 @@
             android:drawableLeft="@drawable/logo_google_30"
             android:padding="10dp"
             android:textSize="20sp"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:textColor="#757575"
+            android:includeFontPadding="false"
             android:text="구글 로그인"
             />
     </FrameLayout>
@@ -121,6 +137,7 @@
         android:layout_marginBottom="1dp"
         android:layout_marginTop="10dp"
         android:background="#ffeb00"
+        android:foreground="?attr/selectableItemBackground"
         android:id="@+id/buttonLoginKakao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -135,6 +152,9 @@
             android:padding="10dp"
             android:textSize="20sp"
             android:text="카카오 로그인"
+            android:textColor="#3c1e1e"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:includeFontPadding="false"
             />
     </FrameLayout>
     <FrameLayout
@@ -146,6 +166,7 @@
         android:layout_marginBottom="1dp"
         android:layout_marginTop="10dp"
         android:background="#1ec800"
+        android:foreground="?attr/selectableItemBackground"
         android:id="@+id/buttonLoginNaver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -160,6 +181,9 @@
             android:padding="10dp"
             android:textSize="20sp"
             android:text="네이버 로그인"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:includeFontPadding="false"
             />
     </FrameLayout>
     <FrameLayout
@@ -171,6 +195,7 @@
         android:layout_marginBottom="1dp"
         android:layout_marginTop="10dp"
         android:background="#3a5daa"
+        android:foreground="?attr/selectableItemBackground"
         android:id="@+id/buttonLoginFacebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -185,6 +210,9 @@
             android:padding="10dp"
             android:textSize="20sp"
             android:text="페이스북 로그인"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:textColor="@android:color/white"
+            android:includeFontPadding="false"
             />
     </FrameLayout>
 
@@ -196,6 +224,8 @@
         android:textSize="12sp"
         android:textColor="#757575"
         android:text="이용약관"
+        android:fontFamily="@font/noto_sans_kr_light"
+        android:includeFontPadding="false"
         app:layout_constraintTop_toBottomOf="@id/buttonLoginFacebook"
         app:layout_constraintEnd_toStartOf="@+id/buttonPrivacy"
         />
@@ -207,6 +237,8 @@
         android:textSize="12sp"
         android:textColor="#757575"
         android:text="개인정보처리방침"
+        android:fontFamily="@font/noto_sans_kr_light"
+        android:includeFontPadding="false"
         app:layout_constraintTop_toBottomOf="@id/buttonLoginFacebook"
         app:layout_constraintEnd_toEndOf="parent"
         />
