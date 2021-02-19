@@ -8,241 +8,239 @@
     tools:context=".LoginActivity"
     >
 
-    <ImageView
-        android:id="@+id/imageView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sumai_logo_blue" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="로그인"
-        android:textSize="28sp"
-        android:fontFamily="@font/noto_sans_kr_medium"
-        android:includeFontPadding="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
-
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:hint="이메일"
-        android:fontFamily="@font/noto_sans_kr_medium"
-        android:includeFontPadding="false"
-        android:padding="14dp"
-        android:background="@drawable/border"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_marginTop="14dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="비밀번호"
-        android:fontFamily="@font/noto_sans_kr_medium"
-        android:includeFontPadding="false"
-        android:padding="14dp"
-        android:background="@drawable/border"
-        app:layout_constraintTop_toBottomOf="@id/editTextEmail" />
-
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/rectangle_primary_dark"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:fontFamily="@font/noto_sans_kr_medium"
-        android:includeFontPadding="false"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:text="로그인"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
-        />
-
-    <Button
-        android:id="@+id/buttonFindPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="0dp"
-        android:background="@null"
-        android:textSize="13sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/noto_sans_kr_medium"
-        android:includeFontPadding="false"
-        android:text="비밀번호 찾기"
-        app:layout_constraintEnd_toStartOf="@id/buttonSignup"
-        app:layout_constraintTop_toBottomOf="@id/buttonLogin" />
-
-    <Button
-        android:id="@+id/buttonSignup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="0dp"
-        android:background="@null"
-        android:textSize="13sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/noto_sans_kr_medium"
-        android:includeFontPadding="false"
-        android:text="계정 만들기"
-        app:layout_constraintTop_toBottomOf="@id/buttonLogin"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <FrameLayout
-        android:clickable="true"
-        android:focusable="true"
-        android:elevation="3dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="20dp"
-        android:background="#fafafa"
-        android:foreground="?attr/selectableItemBackground"
-        android:id="@+id/buttonLoginGoogle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/buttonFindPassword"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/logo_google_30"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:fontFamily="@font/noto_sans_kr_medium"
-            android:textColor="#757575"
-            android:includeFontPadding="false"
-            android:text="구글 로그인"
-            />
-    </FrameLayout>
-    <FrameLayout
-        android:clickable="true"
-        android:focusable="true"
-        android:elevation="3dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="10dp"
-        android:background="#ffeb00"
-        android:foreground="?attr/selectableItemBackground"
-        android:id="@+id/buttonLoginKakao"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/buttonLoginGoogle"
-        >
+            >
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="로그인"
+                android:textSize="28sp"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageView" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/logo_kakao_30"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:text="카카오 로그인"
-            android:textColor="#3c1e1e"
-            android:fontFamily="@font/noto_sans_kr_medium"
-            android:includeFontPadding="false"
-            />
-    </FrameLayout>
-    <FrameLayout
-        android:clickable="true"
-        android:focusable="true"
-        android:elevation="3dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="10dp"
-        android:background="#1ec800"
-        android:foreground="?attr/selectableItemBackground"
-        android:id="@+id/buttonLoginNaver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/buttonLoginKakao"
-        >
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="이메일"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                android:padding="14dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/textView" />
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_marginTop="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="비밀번호"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                android:padding="14dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/logo_naver_30"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:text="네이버 로그인"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/noto_sans_kr_medium"
-            android:includeFontPadding="false"
-            />
-    </FrameLayout>
-    <FrameLayout
-        android:clickable="true"
-        android:focusable="true"
-        android:elevation="3dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="10dp"
-        android:background="#3a5daa"
-        android:foreground="?attr/selectableItemBackground"
-        android:id="@+id/buttonLoginFacebook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/buttonLoginNaver"
-        >
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/rectangle_primary_dark"
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="로그인"
+                app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/logo_facebook_30"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:text="페이스북 로그인"
-            android:fontFamily="@font/noto_sans_kr_medium"
-            android:textColor="@android:color/white"
-            android:includeFontPadding="false"
-            />
-    </FrameLayout>
+            <Button
+                android:id="@+id/buttonFindPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:background="@null"
+                android:textSize="13sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                android:text="비밀번호 찾기"
+                app:layout_constraintEnd_toStartOf="@id/buttonSignup"
+                app:layout_constraintTop_toBottomOf="@id/buttonLogin" />
 
-    <Button
-        android:id="@+id/buttonTerms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:textSize="12sp"
-        android:textColor="#757575"
-        android:text="이용약관"
-        android:fontFamily="@font/noto_sans_kr_light"
-        android:includeFontPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/buttonLoginFacebook"
-        app:layout_constraintEnd_toStartOf="@+id/buttonPrivacy"
-        />
-    <Button
-        android:id="@+id/buttonPrivacy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:textSize="12sp"
-        android:textColor="#757575"
-        android:text="개인정보처리방침"
-        android:fontFamily="@font/noto_sans_kr_light"
-        android:includeFontPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/buttonLoginFacebook"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+            <Button
+                android:id="@+id/buttonSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:background="@null"
+                android:textSize="13sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                android:text="계정 만들기"
+                app:layout_constraintTop_toBottomOf="@id/buttonLogin"
+                app:layout_constraintEnd_toEndOf="parent" />
 
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="3dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#fafafa"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/buttonLoginGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/buttonFindPassword"
+                >
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/logo_google_30"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:textColor="#757575"
+                    android:includeFontPadding="false"
+                    android:text="구글 로그인"
+                    />
+            </FrameLayout>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="3dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#ffeb00"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/buttonLoginKakao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/buttonLoginGoogle"
+                >
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/logo_kakao_30"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:text="카카오 로그인"
+                    android:textColor="#3c1e1e"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    />
+            </FrameLayout>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="3dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#1ec800"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/buttonLoginNaver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/buttonLoginKakao"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/logo_naver_30"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:text="네이버 로그인"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    />
+            </FrameLayout>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="3dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#3a5daa"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/buttonLoginFacebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/buttonLoginNaver"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/logo_facebook_30"
+                    android:padding="10dp"
+                    android:textSize="20sp"
+                    android:text="페이스북 로그인"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:textColor="@android:color/white"
+                    android:includeFontPadding="false"
+                    />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/buttonTerms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textSize="12sp"
+                android:textColor="#757575"
+                android:text="이용약관"
+                android:fontFamily="@font/noto_sans_kr_light"
+                android:includeFontPadding="false"
+                app:layout_constraintTop_toBottomOf="@id/buttonLoginFacebook"
+                app:layout_constraintEnd_toStartOf="@+id/buttonPrivacy"
+                />
+            <Button
+                android:id="@+id/buttonPrivacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textSize="12sp"
+                android:textColor="#757575"
+                android:text="개인정보처리방침"
+                android:fontFamily="@font/noto_sans_kr_light"
+                android:includeFontPadding="false"
+                app:layout_constraintTop_toBottomOf="@id/buttonLoginFacebook"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
