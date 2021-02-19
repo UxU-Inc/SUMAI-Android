@@ -11,8 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".GuideActivity"></activity>
+        <activity android:name=".SignUpPage1Activity" />
+        <activity android:name=".SignUpPage2Activity" />
+        <activity android:name=".SignUpPage3Activity" />
+        <activity android:name=".FindPasswordActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".GuideActivity" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -22,9 +26,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- 애드몹 -->
+        </activity> <!-- 애드몹 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4995049534759533~1659448878" />
