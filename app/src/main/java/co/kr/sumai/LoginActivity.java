@@ -23,6 +23,7 @@ import java.io.IOException;
 import co.kr.sumai.net.LoginInforResponse;
 import co.kr.sumai.net.LoginRequest;
 import co.kr.sumai.net.LoginResponse;
+import co.kr.sumai.net.NetRetrofitStore;
 import co.kr.sumai.net.SumaiService;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
@@ -71,21 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         buttonTerms = findViewById(R.id.buttonTerms);
         buttonPrivacy = findViewById(R.id.buttonPrivacy);
 
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        CookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor((this)));
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient
-                .Builder()
-                .cookieJar(cookieJar)
-                .addInterceptor(loggingInterceptor).build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.sumai.co.kr/")
-                .addConverterFactory((GsonConverterFactory.create()))
-                .client(client)
-                .build();
-
-        service = retrofit.create(SumaiService.class);
+        service = NetRetrofitStore.getInstance().getService();
 
         // get login infor
         Call<LoginInforResponse> loginInfor = service.getInfo();
@@ -96,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         JSONObject jObjectError = new JSONObject(response.errorBody().string());
                         Toast.makeText(LoginActivity.this, jObjectError.getString("error"), Toast.LENGTH_SHORT).show();
-                        Log.e("asdf", jObjectError.toString());
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
@@ -120,11 +106,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 // editTextEmail, editTextPassword를 https//sumai.co.kr/api/login 으로 전송
-                final Call<LoginResponse> getObject = service.postLogin(new LoginRequest(editTextEmail.getText().toString(), "testtest1@"));
+                final Call<LoginResponse> getObject = service.postLogin(new LoginRequest(email, password));
 
                 getObject.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        // 로그인 실패
                         if(!response.isSuccessful()) {
                             try {
                                 JSONObject jObjectError = new JSONObject(response.errorBody().string());
@@ -134,15 +121,15 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             return;
                         }
-                    Log.e("test",response.body().toString());
-                }
-                @Override
-                public void onFailure(Call<LoginResponse> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-                // 결과를 처리
+                        // 로그인 성공
+                        Log.e("test",response.body().toString());
+                        finish();
+                    }
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        Toast.makeText(LoginActivity.this, "다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         buttonFindPassword.setOnClickListener(new View.OnClickListener() {
