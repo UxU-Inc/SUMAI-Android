@@ -12,6 +12,12 @@ public interface SumaiService {
     @GET("/api/account/getinfo")
     Call<LoginInforResponse> getInfo();
 
+    // singup
+    @POST("/api/account/checkSignupEmail")
+    Call<CheckEmailResponse> checkEmail(@Body CheckEmailRequest checkEmailRequest);
+
+    //
+
     @POST("/api/summary/request")
     Call<SummaryResponse> SUMMARY(@Body SummaryRequest summaryRequest);
 }
