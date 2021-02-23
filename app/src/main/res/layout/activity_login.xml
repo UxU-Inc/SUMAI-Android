@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="40dp"
-    tools:context=".LoginActivity"
-    >
+    tools:context=".LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,7 +13,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:padding="40dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/sumai_logo_blue" />
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -58,7 +66,7 @@
                 android:id="@+id/buttonLogin"
                 android:layout_marginTop="14dp"
                 android:background="@drawable/rectangle_primary_dark"
-                android:padding="12dp"
+                android:padding="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -99,6 +107,7 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <FrameLayout
+                android:id="@+id/buttonLoginGoogle"
                 android:clickable="true"
                 android:focusable="true"
                 android:elevation="3dp"
@@ -108,7 +117,6 @@
                 android:layout_marginTop="20dp"
                 android:background="#fafafa"
                 android:foreground="?attr/selectableItemBackground"
-                android:id="@+id/buttonLoginGoogle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/buttonFindPassword"
@@ -128,6 +136,7 @@
                     />
             </FrameLayout>
             <FrameLayout
+                android:id="@+id/buttonLoginKakao"
                 android:clickable="true"
                 android:focusable="true"
                 android:elevation="3dp"
@@ -137,7 +146,6 @@
                 android:layout_marginTop="10dp"
                 android:background="#ffeb00"
                 android:foreground="?attr/selectableItemBackground"
-                android:id="@+id/buttonLoginKakao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/buttonLoginGoogle"
@@ -157,6 +165,7 @@
                     />
             </FrameLayout>
             <FrameLayout
+                android:id="@+id/buttonLoginNaver"
                 android:clickable="true"
                 android:focusable="true"
                 android:elevation="3dp"
@@ -166,7 +175,6 @@
                 android:layout_marginTop="10dp"
                 android:background="#1ec800"
                 android:foreground="?attr/selectableItemBackground"
-                android:id="@+id/buttonLoginNaver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/buttonLoginKakao"
@@ -186,6 +194,7 @@
                     />
             </FrameLayout>
             <FrameLayout
+                android:id="@+id/buttonLoginFacebook"
                 android:clickable="true"
                 android:focusable="true"
                 android:elevation="3dp"
@@ -195,7 +204,6 @@
                 android:layout_marginTop="10dp"
                 android:background="#3a5daa"
                 android:foreground="?attr/selectableItemBackground"
-                android:id="@+id/buttonLoginFacebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/buttonLoginNaver"
@@ -214,6 +222,13 @@
                     android:includeFontPadding="false"
                     />
             </FrameLayout>
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/btn_facebook_login_dumy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
 
             <Button
                 android:id="@+id/buttonTerms"

@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "123591710916-092eans91vkhi3ncnco9eihg60iq6g74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.kr.sumai",
+            "certificate_hash": "6e7113e81cee73510436a471603349402c09389c"
+          }
+        },
+        {
+          "client_id": "123591710916-btumff2tivp1qavtg9eoaa0oehsbl668.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.kr.sumai",
+            "certificate_hash": "09e1f8e9cdf03a00aa9dcfd8a048a941d815ba43"
+          }
+        },
+        {
+          "client_id": "123591710916-h3jgkuucletg422j88la6d7bo14g4p9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.kr.sumai",
+            "certificate_hash": "2ab1b11c91a2c949c2c0caab0efc4e5b759f150a"
+          }
+        },
+        {
           "client_id": "123591710916-qkhs9fs6sdg7meeb8avmu7u5aibq27o0.apps.googleusercontent.com",
           "client_type": 3
         }

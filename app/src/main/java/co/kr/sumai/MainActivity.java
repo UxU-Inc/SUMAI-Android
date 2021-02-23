@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -107,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // AdMob
         AdmobInit();
-
     }
 
     private void initLayout() {
@@ -277,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         loadInterstitial();
 
-        Call<SummaryResponse> res = NetRetrofitStore.getInstance().getService().SUMMARY(new SummaryRequest(data, ID, record));
+        Call<SummaryResponse> res = NetRetrofitStore.getInstance().getService().getSummary(new SummaryRequest(data, ID, record));
         res.enqueue(new Callback<SummaryResponse>() {
             @Override
             public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
