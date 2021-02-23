@@ -65,7 +65,7 @@ class SignUpPage1Activity : AppCompatActivity() {
         } else {
             val service = NetRetrofitStore.getInstance().service
             val getObject = service.checkEmail(CheckEmailRequest(email))
-            getObject.enqueue(object : Callback<CheckEmailResponse?> {
+            getObject!!.enqueue(object : Callback<CheckEmailResponse?> {
                 override fun onResponse(call: Call<CheckEmailResponse?>, response: Response<CheckEmailResponse?>) {
                     if (response.isSuccessful) {
                         infor!!.email = editTextEmailAddress!!.text.toString()

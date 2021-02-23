@@ -140,17 +140,11 @@
                 android:id="@+id/buttonNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-<<<<<<< HEAD
                 android:layout_marginTop="25dp"
                 android:background="@drawable/rectangle_primary_dark"
                 android:padding="15dp"
                 android:fontFamily="@font/noto_sans_kr_medium"
                 android:includeFontPadding="false"
-=======
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginTop="25dp"
-                android:padding="12.5dp"
->>>>>>> ksm
                 android:text="다음"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
