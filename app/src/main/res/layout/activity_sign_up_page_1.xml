@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:padding="15dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="이메일"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
                 android:id="@+id/editTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="이름"
                 android:inputType="textPersonName"
                 android:layout_marginTop="15dp"
@@ -93,7 +93,7 @@
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
                 android:layout_marginTop="15dp"
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:padding="15dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="비밀번호 확인"
                 android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -141,7 +141,7 @@
                 />
 
             <CheckBox
-                android:id="@+id/checkboxTerms"
+                android:id="@+id/checkBoxTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17.5dp"
@@ -164,13 +164,13 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewErrorPasswordCheck" />
 
             <CheckBox
-                android:id="@+id/checkboxPrivacy"
+                android:id="@+id/checkBoxPrivacy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="개인정보처리방침 동의"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/checkboxTerms"
+                app:layout_constraintTop_toBottomOf="@id/checkBoxTerms"
                 />
 
             <Button
@@ -187,7 +187,7 @@
 
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
