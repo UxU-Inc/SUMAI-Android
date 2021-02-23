@@ -1,24 +1,18 @@
 package co.kr.sumai
 
+import kotlinx.android.synthetic.main.activity_login.*
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import co.kr.sumai.GuideActivity
-import co.kr.sumai.LoginActivity
 import co.kr.sumai.net.*
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -32,22 +26,8 @@ import java.io.IOException
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
-    private var editTextEmail: EditText? = null
-    private var editTextPassword: EditText? = null
-    private var buttonLogin: Button? = null
-    private var buttonFindPassword: Button? = null
-    private var buttonSignup: Button? = null
-    private var buttonLoginGoogle: FrameLayout? = null
-    private var buttonLoginKakao: FrameLayout? = null
-    private var buttonLoginNaver: FrameLayout? = null
-    private var buttonLoginFacebook: FrameLayout? = null
-    private var mGoogleSignInClient: GoogleSignInClient? = null
     private var mAuth: FirebaseAuth? = null
     private var facebookCallbackManager: CallbackManager? = null
-    private var btn_facebook_login_dumy: LoginButton? = null
-    private var buttonTerms: Button? = null
-    private var buttonPrivacy: Button? = null
-    private var service: SumaiService? = null
     override fun onStart() {
         super.onStart()
         // 사용자가 이미 로그인 한 경우 기존 Google 로그인 계정을 확인합니다.
@@ -57,23 +37,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initTag() {
-        editTextEmail = findViewById(R.id.editTextEmail)
-        editTextPassword = findViewById(R.id.editTextPassword)
-        buttonLogin = findViewById(R.id.buttonLogin)
-        buttonFindPassword = findViewById(R.id.buttonFindPassword)
-        buttonSignup = findViewById(R.id.buttonSignup)
-        buttonLoginGoogle = findViewById(R.id.buttonLoginGoogle)
-        buttonLoginKakao = findViewById(R.id.buttonLoginKakao)
-        buttonLoginNaver = findViewById(R.id.buttonLoginNaver)
-        buttonLoginFacebook = findViewById(R.id.buttonLoginFacebook)
-        buttonTerms = findViewById(R.id.buttonTerms)
-        buttonPrivacy = findViewById(R.id.buttonPrivacy)
         NetRetrofitStore.createNetRetrofit(this)
-        service = NetRetrofitStore.getInstance().service
+        val service = NetRetrofitStore.getInstance().service
 
         // get login infor
         val loginInfor = service.info
-        loginInfor!!.enqueue(object : Callback<LoginInforResponse> {
+        loginInfor.enqueue(object : Callback<LoginInforResponse> {
             override fun onResponse(call: Call<LoginInforResponse>, response: Response<LoginInforResponse>) {
                 if (!response.isSuccessful) {
                     try {
@@ -153,7 +122,6 @@ class LoginActivity : AppCompatActivity() {
         buttonLoginKakao!!.setOnClickListener { kakaoLogin() }
         buttonLoginNaver!!.setOnClickListener { naverLogin() }
         facebookCallbackManager = CallbackManager.Factory.create()
-        btn_facebook_login_dumy = findViewById<View>(R.id.btn_facebook_login_dumy) as LoginButton
         buttonLoginFacebook!!.setOnClickListener { btn_facebook_login_dumy!!.performClick() }
         btn_facebook_login_dumy!!.setReadPermissions(Arrays.asList("public_profile", "email"))
         btn_facebook_login_dumy!!.registerCallback(facebookCallbackManager, object : FacebookCallback<LoginResult> {
@@ -207,7 +175,7 @@ class LoginActivity : AppCompatActivity() {
                 .build()
 
         // gso에서 지정한 옵션으로 GoogleSignInClient 빌드
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         val signInIntent = mGoogleSignInClient.getSignInIntent()
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -263,8 +231,8 @@ class LoginActivity : AppCompatActivity() {
         if (SNSType == "google") SNSName = "구글" else if (SNSType == "kakao") SNSName = "카카오" else if (SNSType == "naver") SNSName = "네이버" else if (SNSType == "facebook") SNSName = "페이스북"
         val finalSNSName = SNSName
         val res = NetRetrofitStore.getInstance().service.getLoginState(SNSLoginRequest(SNSType, email, name, id, gender, birth, ageRange, imageURL))
-        res!!.enqueue(object : Callback<SNSLoginResponse?> {
-            override fun onResponse(call: Call<SNSLoginResponse?>, response: Response<SNSLoginResponse?>) {
+        res!!.enqueue(object : Callback<SNSLoginResponse> {
+            override fun onResponse(call: Call<SNSLoginResponse>, response: Response<SNSLoginResponse>) {
                 if (response.body() != null && response.body()!!.complete) {
                     savePreferences("loginData", "SNSType", SNSType)
                     savePreferences("loginData", "email", email)
@@ -288,7 +256,7 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
 
-            override fun onFailure(call: Call<SNSLoginResponse?>, t: Throwable) {
+            override fun onFailure(call: Call<SNSLoginResponse>, t: Throwable) {
                 Toast.makeText(applicationContext, "$finalSNSName 로그인 중 서버 접속 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         })

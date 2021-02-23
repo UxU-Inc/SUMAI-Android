@@ -7,14 +7,17 @@ import retrofit2.http.POST
 
 interface SumaiService {
     @POST("/api/account/login")
-    fun postLogin(@Body loginRequest: LoginRequest?): Call<LoginResponse?>?
+    fun postLogin(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @get:GET("/api/account/getinfo")
-    val info: Call<LoginInforResponse?>?
+    val info: Call<LoginInforResponse>
+
+    @POST(value = "/api/account/checkSignupEmail")
+    fun checkEmail(@Body checkEmailRequest: CheckEmailRequest): Call<CheckEmailResponse>
 
     @POST("/api/summary/request")
-    fun getSummary(@Body summaryRequest: SummaryRequest?): Call<SummaryResponse?>?
+    fun getSummary(@Body summaryRequest: SummaryRequest): Call<SummaryResponse>
 
     @POST("/api/sumaiMobile/account")
-    fun getLoginState(@Body SNSLoginRequest: SNSLoginRequest?): Call<SNSLoginResponse?>?
+    fun getLoginState(@Body SNSLoginRequest: Unit): Call<SNSLoginResponse>
 }
