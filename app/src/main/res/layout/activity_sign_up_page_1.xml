@@ -46,40 +46,74 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:padding="15dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="이메일"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+            <TextView
+                android:id="@+id/textViewErrorEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorError"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="14dp"
+                android:text="이메일 형식이 올바르지 않습니다."
+                app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"
+                app:layout_constraintStart_toStartOf="@+id/editTextEmailAddress"
+                />
+
 
             <EditText
                 android:id="@+id/editTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:padding="15dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="이름"
                 android:inputType="textPersonName"
+                android:layout_marginTop="15dp"
+                android:padding="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress"
+                app:layout_constraintTop_toBottomOf="@+id/textViewErrorEmail" />
+
+            <TextView
+                android:id="@+id/textViewErrorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorError"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="14dp"
+                android:text="한글, 영어만 사용, 2~10자리"
+                app:layout_constraintTop_toBottomOf="@+id/editTextName"
+                app:layout_constraintStart_toStartOf="@+id/editTextName"
                 />
 
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:padding="15dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="비밀번호"
                 android:inputType="textPassword"
+                android:layout_marginTop="15dp"
+                android:padding="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewErrorName" />
+
+            <TextView
+                android:id="@+id/textViewErrorPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="14dp"
+                android:textColor="@color/colorError"
+                android:text="영어, 숫자, 특수문자 포함, 8~15자리"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+                app:layout_constraintStart_toStartOf="@+id/editTextPassword"
                 />
 
             <EditText
@@ -88,16 +122,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:padding="15dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="비밀번호 확인"
                 android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+                app:layout_constraintTop_toBottomOf="@+id/textViewErrorPassword"
+                />
+
+            <TextView
+                android:id="@+id/textViewErrorPasswordCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorError"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="14dp"
+                android:text="비밀번호가 다릅니다."
+                app:layout_constraintTop_toBottomOf="@+id/editTextPasswordCheck"
+                app:layout_constraintStart_toStartOf="@+id/editTextPasswordCheck"
                 />
 
             <CheckBox
-                android:id="@+id/checkboxTerms"
+                android:id="@+id/checkBoxTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="17.5dp"
@@ -107,7 +153,7 @@
                 android:includeFontPadding="false"
                 android:text="이용약관 동의"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/editTextPasswordCheck"
+                app:layout_constraintTop_toBottomOf="@id/textViewErrorPasswordCheck"
                 />
 
             <Button
@@ -124,10 +170,10 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/buttonPrivacy"
-                app:layout_constraintTop_toBottomOf="@id/editTextPasswordCheck" />
+                app:layout_constraintTop_toBottomOf="@id/textViewErrorPasswordCheck" />
 
             <CheckBox
-                android:id="@+id/checkboxPrivacy"
+                android:id="@+id/checkBoxPrivacy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
@@ -136,7 +182,7 @@
                 android:fontFamily="@font/noto_sans_kr_medium"
                 android:includeFontPadding="false"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/checkboxTerms"
+                app:layout_constraintTop_toBottomOf="@id/checkBoxTerms"
                 />
 
             <Button
@@ -157,7 +203,7 @@
 
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
