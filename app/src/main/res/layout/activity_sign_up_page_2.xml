@@ -45,9 +45,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="연"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:padding="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/editTextMonth"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -60,9 +60,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginHorizontal="15dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="월"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:padding="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/editTextDay"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -74,44 +74,90 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/border"
+                android:background="@drawable/border_error_selector"
                 android:hint="일"
-                android:inputType="textPassword"
+                android:inputType="number"
                 android:padding="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/editTextMonth"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-            <EditText
-                android:id="@+id/editTextSex"
+            <TextView
+                android:id="@+id/textViewErrorBirthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="14dp"
+
+                android:textColor="@color/colorError"
+                android:text="생일 에러"
+
+                app:layout_constraintStart_toStartOf="@+id/editTextYear"
+                app:layout_constraintTop_toBottomOf="@+id/editTextYear"
+                />
+
+
+            <Spinner
+                android:id="@+id/spinnerGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/border"
-                android:hint="성별 (선택사항)"
-                android:inputType="textPassword"
-                android:padding="15dp"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextDay" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewErrorBirthday" />
 
-            <Button
-                android:id="@+id/button"
+            <EditText
+                android:id="@+id/editTextGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_error_selector"
+                android:padding="15dp"
+                android:hint="성별 입력"
+
+                app:layout_constraintStart_toStartOf="@+id/spinnerGender"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerGender"
+                />
+
+
+            <TextView
+                android:id="@+id/textViewErrorGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="14dp"
+
+                android:textColor="@color/colorError"
+                android:text="성별 에러"
+
+                app:layout_constraintStart_toStartOf="@+id/editTextGender"
+                app:layout_constraintTop_toBottomOf="@+id/editTextGender" />
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:layout_marginTop="25dp"
                 android:background="@drawable/rectangle_primary_dark"
                 android:padding="15dp"
                 android:fontFamily="@font/noto_sans_kr_medium"
                 android:includeFontPadding="false"
+=======
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginTop="25dp"
+                android:padding="12.5dp"
+>>>>>>> ksm
                 android:text="다음"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextSex" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewErrorGender" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

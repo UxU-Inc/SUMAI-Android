@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gender_array">
+        <item>여성</item>
+        <item>남성</item>
+        <item>공개 안함</item>
+        <item>사용자 지정</item>
+        <item>성별 (선택사항)</item>
+    </string-array>
+</resources>
