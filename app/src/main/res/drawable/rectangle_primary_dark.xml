@@ -5,10 +5,10 @@
     tools:targetApi="lollipop">
 
     <item
-        android:bottom="1dp"
-        android:left="1dp"
-        android:right="1dp"
-        android:top="1dp">
+        android:bottom="5dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="5dp">
 
         <shape android:shape="rectangle" >
             <corners android:radius="5dp"/>
