@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class SignUpPage2Activity : AppCompatActivity() {
-    private var infor: SignUpInfor? = null
+    private lateinit var infor: SignUpInfor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +21,8 @@ class SignUpPage2Activity : AppCompatActivity() {
         initLayout()
         buttonNext.setOnClickListener(View.OnClickListener {
             if (!verify()) return@OnClickListener
-            infor!!.birthday = ""
-            infor!!.sex = ""
+            infor.birthday = ""
+            infor.sex = ""
             val intent = Intent(applicationContext, SignUpPage3Activity::class.java)
             intent.putExtra("infor", infor)
             startActivity(intent)
@@ -38,15 +38,15 @@ class SignUpPage2Activity : AppCompatActivity() {
         spinnerGender.adapter = adapter
         spinnerGender.setSelection(adapter.count)
         spinnerGender.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 if ("사용자 지정" == spinnerGender.getItemAtPosition(i)) {
-                    editTextGender!!.visibility = View.VISIBLE
+                    editTextGender.visibility = View.VISIBLE
                 } else {
-                    editTextGender!!.visibility = View.GONE
+                    editTextGender.visibility = View.GONE
                 }
             }
 
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+            override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
         editTextGender.visibility = View.GONE
         textViewErrorBirthday.visibility = View.GONE
@@ -54,16 +54,16 @@ class SignUpPage2Activity : AppCompatActivity() {
     }
 
     private fun verify(): Boolean {
-        textViewErrorBirthday!!.visibility = View.GONE
-        textViewErrorGender!!.visibility = View.GONE
-        editTextYear!!.isSelected = false
-        editTextMonth!!.isSelected = false
-        editTextDay!!.isSelected = false
-        editTextGender!!.isSelected = false
-        val year = editTextYear!!.text.toString()
-        val month = editTextMonth!!.text.toString()
-        val day = editTextDay!!.text.toString()
-        val gender = spinnerGender!!.selectedItem as String
+        textViewErrorBirthday.visibility = View.GONE
+        textViewErrorGender.visibility = View.GONE
+        editTextYear.isSelected = false
+        editTextMonth.isSelected = false
+        editTextDay.isSelected = false
+        editTextGender.isSelected = false
+        val year = editTextYear.text.toString()
+        val month = editTextMonth.text.toString()
+        val day = editTextDay.text.toString()
+        val gender = spinnerGender.selectedItem as String
         var yearInt = 0
         var monthInt = 0
         var dayInt = 0
@@ -75,20 +75,20 @@ class SignUpPage2Activity : AppCompatActivity() {
         }
         if (year == "" && month == "" && day == "") {
         } else if (year == "" || month == "" || day == "") {
-            textViewErrorBirthday!!.text = "생년월일을 정확히 입력해 주세요."
-            textViewErrorBirthday!!.visibility = View.VISIBLE
+            textViewErrorBirthday.text = "생년월일을 정확히 입력해 주세요."
+            textViewErrorBirthday.visibility = View.VISIBLE
         } else if (yearInt < 1000 || 10000 <= yearInt) {
-            textViewErrorBirthday!!.text = "4자리 연도를 입력해 주세요."
-            textViewErrorBirthday!!.visibility = View.VISIBLE
-            editTextYear!!.isSelected = true
+            textViewErrorBirthday.text = "4자리 연도를 입력해 주세요."
+            textViewErrorBirthday.visibility = View.VISIBLE
+            editTextYear.isSelected = true
         } else if (yearInt < 1890) {
-            textViewErrorBirthday!!.text = "올바른 연도를 입력해 주세요."
-            textViewErrorBirthday!!.visibility = View.VISIBLE
-            editTextYear!!.isSelected = true
+            textViewErrorBirthday.text = "올바른 연도를 입력해 주세요."
+            textViewErrorBirthday.visibility = View.VISIBLE
+            editTextYear.isSelected = true
         } else if (dayInt !in 1..31) {
-            textViewErrorBirthday!!.text = "올바른 일을 입력해 주세요."
-            textViewErrorBirthday!!.visibility = View.VISIBLE
-            editTextDay!!.isSelected = true
+            textViewErrorBirthday.text = "올바른 일을 입력해 주세요."
+            textViewErrorBirthday.visibility = View.VISIBLE
+            editTextDay.isSelected = true
         } else {
             val birthdayString = String.format("%04d%02d%02d", yearInt, monthInt, dayInt)
             val dateVerify = SimpleDateFormat("yyyyMMdd")
@@ -100,26 +100,26 @@ class SignUpPage2Activity : AppCompatActivity() {
 
                 // 현재 날짜와 비교
                 if (birthday > date) {
-                    textViewErrorBirthday!!.text = "올바른 생년월일을 입력해 주세요."
-                    textViewErrorBirthday!!.visibility = View.VISIBLE
-                    editTextYear!!.isSelected = true
-                    editTextMonth!!.isSelected = true
-                    editTextDay!!.isSelected = true
+                    textViewErrorBirthday.text = "올바른 생년월일을 입력해 주세요."
+                    textViewErrorBirthday.visibility = View.VISIBLE
+                    editTextYear.isSelected = true
+                    editTextMonth.isSelected = true
+                    editTextDay.isSelected = true
                     return false
                 }
             } catch (e: ParseException) {
-                textViewErrorBirthday!!.text = "올바른 생년월일을 입력해 주세요."
-                textViewErrorBirthday!!.visibility = View.VISIBLE
-                editTextYear!!.isSelected = true
-                editTextMonth!!.isSelected = true
-                editTextDay!!.isSelected = true
+                textViewErrorBirthday.text = "올바른 생년월일을 입력해 주세요."
+                textViewErrorBirthday.visibility = View.VISIBLE
+                editTextYear.isSelected = true
+                editTextMonth.isSelected = true
+                editTextDay.isSelected = true
                 return false
             }
         }
-        if (gender == "사용자 지정" && editTextGender!!.text.toString() == "") {
-            textViewErrorGender!!.text = "사용자 지정 성별을 입력해주세요."
-            textViewErrorGender!!.visibility = View.VISIBLE
-            editTextGender!!.isSelected = true
+        if (gender == "사용자 지정" && editTextGender.text.toString() == "") {
+            textViewErrorGender.text = "사용자 지정 성별을 입력해주세요."
+            textViewErrorGender.visibility = View.VISIBLE
+            editTextGender.isSelected = true
         } else {
             return false
         }

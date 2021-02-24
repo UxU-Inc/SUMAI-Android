@@ -10,67 +10,67 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import co.kr.sumai.net.CheckEmailRequest
 import co.kr.sumai.net.CheckEmailResponse
-import co.kr.sumai.net.NetRetrofitStore
+import co.kr.sumai.net.service
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SignUpPage1Activity : AppCompatActivity() {
-    private var infor: SignUpInfor? = null
+    private lateinit var infor: SignUpInfor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_page_1)
         infor = intent.getSerializableExtra("infor") as SignUpInfor
         initLayout()
-        buttonNext!!.setOnClickListener { verify() }
+        buttonNext.setOnClickListener { verify() }
     }
 
     private fun verify(): Boolean {
-        textViewErrorEmail!!.visibility = View.GONE
-        textViewErrorName!!.visibility = View.GONE
-        textViewErrorPassword!!.visibility = View.GONE
-        textViewErrorPasswordCheck!!.visibility = View.GONE
-        editTextEmailAddress!!.isSelected = false
-        editTextName!!.isSelected = false
-        editTextPassword!!.isSelected = false
-        editTextPasswordCheck!!.isSelected = false
-        val email = editTextEmailAddress!!.text.toString()
-        val name = editTextName!!.text.toString()
-        val password = editTextPassword!!.text.toString()
-        val passwordVerification = editTextPasswordCheck!!.text.toString()
-        val terms = checkBoxTerms!!.isChecked
-        val privacy = checkBoxPrivacy!!.isChecked
+        textViewErrorEmail.visibility = View.GONE
+        textViewErrorName.visibility = View.GONE
+        textViewErrorPassword.visibility = View.GONE
+        textViewErrorPasswordCheck.visibility = View.GONE
+        editTextEmailAddress.isSelected = false
+        editTextName.isSelected = false
+        editTextPassword.isSelected = false
+        editTextPasswordCheck.isSelected = false
+        val email = editTextEmailAddress.text.toString()
+        val name = editTextName.text.toString()
+        val password = editTextPassword.text.toString()
+        val passwordVerification = editTextPasswordCheck.text.toString()
+        val terms = checkBoxTerms.isChecked
+        val privacy = checkBoxPrivacy.isChecked
 
         val emailPattern = Regex(pattern = "^[0-9A-z]([-_.]?[0-9A-z])*@[0-9A-z]([-_.]?[0-9A-z])*\\.[A-z]{2,}$")
         val namePattern = Regex(pattern = "^[a-zA-Z가-힣0-9]{2,10}$")
         val passwordPattern = Regex(pattern = "^.*(?=^.{8,15}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[`~!@#\$%^&+*()\\-_+=.,<>/?'\";:\\[\\]{}\\\\|]).*\$")
 
         if (!emailPattern.matches(email)) {
-            textViewErrorEmail!!.visibility = View.VISIBLE
-            editTextEmailAddress!!.isSelected = true
+            textViewErrorEmail.visibility = View.VISIBLE
+            editTextEmailAddress.isSelected = true
         } else if (!namePattern.matches(name)) {
-            textViewErrorName!!.visibility = View.VISIBLE
-            editTextName!!.isSelected = true
+            textViewErrorName.visibility = View.VISIBLE
+            editTextName.isSelected = true
         } else if (!passwordPattern.matches(password)) {
-            textViewErrorPassword!!.visibility = View.VISIBLE
-            editTextPassword!!.isSelected = true
+            textViewErrorPassword.visibility = View.VISIBLE
+            editTextPassword.isSelected = true
         } else if (password != passwordVerification) {
-            textViewErrorPasswordCheck!!.visibility = View.VISIBLE
-            editTextPasswordCheck!!.isSelected = true
+            textViewErrorPasswordCheck.visibility = View.VISIBLE
+            editTextPasswordCheck.isSelected = true
         } else if (!terms) {
             Toast.makeText(this, "이용약관에 동의해주세요.", Toast.LENGTH_SHORT).show()
         } else if (!privacy) {
             Toast.makeText(this, "개인정보처리방침에 동의해주세요..", Toast.LENGTH_SHORT).show()
         } else {
-            val service = NetRetrofitStore.getInstance().service
+            val service = service
             val getObject = service.checkEmail(CheckEmailRequest(email))
-            getObject!!.enqueue(object : Callback<CheckEmailResponse?> {
+            getObject.enqueue(object : Callback<CheckEmailResponse?> {
                 override fun onResponse(call: Call<CheckEmailResponse?>, response: Response<CheckEmailResponse?>) {
                     if (response.isSuccessful) {
-                        infor!!.email = editTextEmailAddress!!.text.toString()
-                        infor!!.name = editTextName!!.text.toString()
-                        infor!!.password = editTextPassword!!.text.toString()
+                        infor.email = editTextEmailAddress.text.toString()
+                        infor.name = editTextName.text.toString()
+                        infor.password = editTextPassword.text.toString()
                         val intent = Intent(applicationContext, SignUpPage2Activity::class.java)
                         intent.putExtra("infor", infor)
                         startActivity(intent)
@@ -94,10 +94,10 @@ class SignUpPage1Activity : AppCompatActivity() {
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
                 val emailPattern = Regex("^[0-9A-z]([-_.]?[0-9A-z])*@[0-9A-z]([-_.]?[0-9A-z])*\\.[A-z]{2,}$")
                 if (!emailPattern.matches(charSequence)) {
-                    textViewErrorEmail!!.visibility = View.VISIBLE
+                    textViewErrorEmail.visibility = View.VISIBLE
                     editTextEmailAddress.isSelected = true
                 } else {
-                    textViewErrorEmail!!.visibility = View.GONE
+                    textViewErrorEmail.visibility = View.GONE
                     editTextEmailAddress.isSelected = false
                 }
             }
@@ -115,10 +115,10 @@ class SignUpPage1Activity : AppCompatActivity() {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 val namePattern = Regex("^[a-zA-Z가-힣0-9]{2,10}$")
                 if (!namePattern.matches(charSequence)) {
-                    textViewErrorName!!.visibility = View.VISIBLE
+                    textViewErrorName.visibility = View.VISIBLE
                     editTextName.setSelected(true)
                 } else {
-                    textViewErrorName!!.visibility = View.GONE
+                    textViewErrorName.visibility = View.GONE
                     editTextName.setSelected(false)
                 }
             }
@@ -131,9 +131,9 @@ class SignUpPage1Activity : AppCompatActivity() {
         textViewErrorPasswordCheck.visibility = View.GONE
 
 
-        editTextEmailAddress.setText(infor!!.email)
-        editTextName.setText(infor!!.name)
-        editTextPassword.setText(infor!!.password)
-        editTextPasswordCheck.setText(infor!!.password)
+        editTextEmailAddress.setText(infor.email)
+        editTextName.setText(infor.name)
+        editTextPassword.setText(infor.password)
+        editTextPasswordCheck.setText(infor.password)
     }
 }

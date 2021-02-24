@@ -13,13 +13,13 @@ class SignUpPage3Activity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up_page_3)
         var infor: SignUpInfor = intent.getSerializableExtra("infor") as SignUpInfor
         val spannable = SpannableString("""
-    ${infor!!.email}로 인증 메일을 보냈습니다. 이메일을 확인해 주세요.
+    ${infor.email}로 인증 메일을 보냈습니다. 이메일을 확인해 주세요.
     
     이메일 인증 후 회원가입이 완료됩니다.
     """.trimIndent())
         spannable.setSpan(
                 ForegroundColorSpan(resources.getColor(R.color.colorPrimary)),
-                0, infor.email!!.length,
+                0, infor.email.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         textViewContext.text = spannable
