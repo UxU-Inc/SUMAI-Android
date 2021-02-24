@@ -37,9 +37,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initTag() {
-        NetRetrofitStore.createNetRetrofit(this)
-        val service = NetRetrofitStore.getInstance().service
-
         // get login infor
         val loginInfor = service.info
         loginInfor.enqueue(object : Callback<LoginInforResponse> {
@@ -230,7 +227,7 @@ class LoginActivity : AppCompatActivity() {
         var SNSName = ""
         if (SNSType == "google") SNSName = "구글" else if (SNSType == "kakao") SNSName = "카카오" else if (SNSType == "naver") SNSName = "네이버" else if (SNSType == "facebook") SNSName = "페이스북"
         val finalSNSName = SNSName
-        val res = NetRetrofitStore.getInstance().service.getLoginState(SNSLoginRequest(SNSType, email, name, id, gender, birth, ageRange, imageURL))
+        val res = service.getLoginState(SNSLoginRequest(SNSType, email, name, id, gender, birth, ageRange, imageURL))
         res!!.enqueue(object : Callback<SNSLoginResponse> {
             override fun onResponse(call: Call<SNSLoginResponse>, response: Response<SNSLoginResponse>) {
                 if (response.body() != null && response.body()!!.complete) {
