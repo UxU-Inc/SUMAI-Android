@@ -97,23 +97,25 @@
             android:clickable="true"
             android:focusable="true"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="m">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewAccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="3dp" />
+                android:src="@drawable/circle"
+                android:layout_marginVertical="3dp"/>
 
             <TextView
                 android:id="@+id/textViewName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textColor="#FAFAFA"
                 android:fontFamily="@font/noto_sans_kr_medium"
                 android:textStyle="bold"
