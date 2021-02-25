@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import co.kr.sumai.func.savePreferences
 import co.kr.sumai.net.*
 import com.facebook.*
 import com.facebook.login.LoginManager
@@ -91,7 +92,7 @@ class LoginActivity : AppCompatActivity() {
             // 제한 사항 추가
 
 
-            // editTextEmail, editTextPassword를 https//sumai.co.kr/api/login 으로 전송
+            // editTextEmail, editTextPassword를 https//sumai.co.kr/api/loginMob 으로 전송
             val getObject = service.postLogin(LoginRequest(email, password))
             getObject!!.enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
@@ -108,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
                         return
                     }
                     // 로그인 성공
-                    Log.e("test", response.body().toString())
+                    savePreferences(applicationContext,"loginData", "id", response.body()?.id)
                     finish()
                 }
 
@@ -122,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
         })
         buttonSignup.setOnClickListener(View.OnClickListener { // SignupActivity로 이동
             val intent = Intent(applicationContext, SignUpPage1Activity::class.java)
-            intent.putExtra("infor", SignUpInfor())
+            intent.putExtra("infor", SignUpInforRequest())
             startActivity(intent)
         })
 
@@ -408,8 +409,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<SNSLoginResponse>, response: Response<SNSLoginResponse>) {
                 if (response.body() != null) {
                     if(response.body()!!.complete == 1) {
-                        savePreferences("loginData", "SNSType", SNSType)
-                        savePreferences("loginData", "id", id)
+                        savePreferences(applicationContext, "loginData", "id", id)
                         Toast.makeText(applicationContext, "$finalSNSName 로그인되었습니다.", Toast.LENGTH_SHORT).show()
                     } else if(response.body()!!.complete == 2) {
                         Toast.makeText(applicationContext, "$finalSNSName 회원 가입되었습니다.", Toast.LENGTH_SHORT).show()
@@ -443,28 +443,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         initTag()
-    }
-
-    // 값 불러오기
-    private fun getPreferences(name: String, key: String): String? {
-        val pref = getSharedPreferences(name, MODE_PRIVATE)
-        return pref.getString(key, "")
-    }
-
-    // 값 저장하기
-    private fun savePreferences(name: String, key: String, defValue: String?) {
-        val pref = getSharedPreferences(name, MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(key, defValue)
-        editor.apply()
-    }
-
-    // 값 삭제하기
-    private fun deletePreferences(name: String, key: String) {
-        val pref = getSharedPreferences(name, MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.remove(key)
-        editor.apply()
     }
 
     companion object {
