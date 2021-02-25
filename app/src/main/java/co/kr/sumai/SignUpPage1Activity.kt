@@ -13,6 +13,10 @@ import co.kr.sumai.net.CheckEmailRequest
 import co.kr.sumai.net.CheckEmailResponse
 import co.kr.sumai.net.SignUpInforRequest
 import co.kr.sumai.net.service
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_sign_up_page_1.buttonPrivacy
+import kotlinx.android.synthetic.main.activity_sign_up_page_1.buttonTerms
+import kotlinx.android.synthetic.main.activity_sign_up_page_1.editTextPassword
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -123,6 +127,14 @@ class SignUpPage1Activity : AppCompatActivity() {
         textViewErrorName.visibility = View.GONE
         textViewErrorPassword.visibility = View.GONE
         textViewErrorPasswordCheck.visibility = View.GONE
+
+
+        buttonTerms.setOnClickListener{ startActivity(Intent(applicationContext, GuideActivity::class.java)) }
+        buttonPrivacy.setOnClickListener {
+            val intent = Intent(applicationContext, GuideActivity::class.java)
+            intent.putExtra("page", 1)
+            startActivity(intent)
+        }
 
 
         editTextEmailAddress.setText(inforRequest.email)

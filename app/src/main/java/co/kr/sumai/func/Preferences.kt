@@ -3,9 +3,9 @@ package co.kr.sumai.func
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 
-    fun loadPreferences(context: Context, name: String, key: String): String? {
+    fun loadPreferences(context: Context, name: String, key: String): String {
         val pref = context.getSharedPreferences(name, AppCompatActivity.MODE_PRIVATE)
-        return pref.getString(key, "")
+        return pref.getString(key, "")!!
     }
 
     // 값 저장하기
