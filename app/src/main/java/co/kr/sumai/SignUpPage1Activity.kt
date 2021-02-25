@@ -5,23 +5,25 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import co.kr.sumai.net.CheckEmailRequest
 import co.kr.sumai.net.CheckEmailResponse
+import co.kr.sumai.net.SignUpInforRequest
 import co.kr.sumai.net.service
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class SignUpPage1Activity : AppCompatActivity() {
-    private lateinit var infor: SignUpInfor
+    private lateinit var inforRequest: SignUpInforRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_page_1)
-        infor = intent.getSerializableExtra("infor") as SignUpInfor
+        inforRequest = intent.getSerializableExtra("infor") as SignUpInforRequest
         initLayout()
         buttonNext.setOnClickListener { verify() }
     }
@@ -63,16 +65,14 @@ class SignUpPage1Activity : AppCompatActivity() {
         } else if (!privacy) {
             Toast.makeText(this, "개인정보처리방침에 동의해주세요..", Toast.LENGTH_SHORT).show()
         } else {
-            val service = service
-            val getObject = service.checkEmail(CheckEmailRequest(email))
-            getObject.enqueue(object : Callback<CheckEmailResponse?> {
+            service.checkEmail(CheckEmailRequest(email)).enqueue(object : Callback<CheckEmailResponse?> {
                 override fun onResponse(call: Call<CheckEmailResponse?>, response: Response<CheckEmailResponse?>) {
                     if (response.isSuccessful) {
-                        infor.email = editTextEmailAddress.text.toString()
-                        infor.name = editTextName.text.toString()
-                        infor.password = editTextPassword.text.toString()
+                        inforRequest.email = editTextEmailAddress.text.toString()
+                        inforRequest.name = editTextName.text.toString()
+                        inforRequest.password = editTextPassword.text.toString()
                         val intent = Intent(applicationContext, SignUpPage2Activity::class.java)
-                        intent.putExtra("infor", infor)
+                        intent.putExtra("infor", inforRequest)
                         startActivity(intent)
                         overridePendingTransition(R.anim.right_in, R.anim.left_out)
                         finish()
@@ -93,7 +93,7 @@ class SignUpPage1Activity : AppCompatActivity() {
         editTextEmailAddress.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
                 val emailPattern = Regex("^[0-9A-z]([-_.]?[0-9A-z])*@[0-9A-z]([-_.]?[0-9A-z])*\\.[A-z]{2,}$")
-                if (!emailPattern.matches(charSequence)) {
+                if (!emailPattern.matches(charSequence) && charSequence.toString() != "") {
                     textViewErrorEmail.visibility = View.VISIBLE
                     editTextEmailAddress.isSelected = true
                 } else {
@@ -102,27 +102,21 @@ class SignUpPage1Activity : AppCompatActivity() {
                 }
             }
 
-            override fun afterTextChanged(arg0: Editable) {
-                // 입력 끝났을 때
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // 입력하기 전
-            }
+            override fun afterTextChanged(arg0: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         })
         editTextName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 val namePattern = Regex("^[a-zA-Z가-힣0-9]{2,10}$")
-                if (!namePattern.matches(charSequence)) {
+                if (!namePattern.matches(charSequence) && charSequence.toString() != "") {
                     textViewErrorName.visibility = View.VISIBLE
-                    editTextName.setSelected(true)
+                    editTextName.isSelected = true
                 } else {
                     textViewErrorName.visibility = View.GONE
-                    editTextName.setSelected(false)
+                    editTextName.isSelected = false
                 }
             }
-
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {}
         })
         textViewErrorEmail.visibility = View.GONE
@@ -131,9 +125,9 @@ class SignUpPage1Activity : AppCompatActivity() {
         textViewErrorPasswordCheck.visibility = View.GONE
 
 
-        editTextEmailAddress.setText(infor.email)
-        editTextName.setText(infor.name)
-        editTextPassword.setText(infor.password)
-        editTextPasswordCheck.setText(infor.password)
+        editTextEmailAddress.setText(inforRequest.email)
+        editTextName.setText(inforRequest.name)
+        editTextPassword.setText(inforRequest.password)
+        editTextPasswordCheck.setText(inforRequest.password)
     }
 }
