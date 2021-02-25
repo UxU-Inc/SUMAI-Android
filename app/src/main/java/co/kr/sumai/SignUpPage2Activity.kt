@@ -33,7 +33,7 @@ class SignUpPage2Activity : AppCompatActivity() {
     }
 
     private fun initLayout() {
-        val adapter = HintSpinner<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.gender_array))
+        val adapter = HintSpinner<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.gender_array))
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGender.adapter = adapter
         spinnerGender.setSelection(adapter.count)

@@ -14,9 +14,7 @@ import android.util.DisplayMetrics
 import android.view.Display
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -24,6 +22,7 @@ import androidx.core.view.GravityCompat
 import co.kr.sumai.net.SummaryRequest
 import co.kr.sumai.net.SummaryResponse
 import co.kr.sumai.net.service
+import com.bumptech.glide.Glide
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.initialization.InitializationStatus
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
@@ -171,7 +170,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://news.sumai.co.kr"))
             startActivity(intent)
         })
+
         val layoutLogin: LinearLayout = findViewById<LinearLayout>(R.id.layoutLogin)
+        val imageViewAccount: ImageView = findViewById<ImageView>(R.id.imageViewAccount)
+        layoutLogin.visibility = View.INVISIBLE
+        imageViewAccount.setBackgroundColor(Color.GREEN)
+        layoutLogin.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+        })
+        Glide.with(this)
+                .load("https://sumai-profile.s3.ap-northeast-2.amazonaws.com/image/0lgZQH2LSevz3nfUdTfsL0QEyZ4%3D.jpg")
+                .into(imageViewAccount)
+
+        val layoutAccount: FrameLayout = findViewById<FrameLayout>(R.id.layoutAccount)
+//        layoutAccount.visibility = View.INVISIBLE
         layoutLogin.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
