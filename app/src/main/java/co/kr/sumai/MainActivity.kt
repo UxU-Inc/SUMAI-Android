@@ -1,11 +1,9 @@
 package co.kr.sumai
 
 import android.content.Intent
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main_content.*
-
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -19,6 +17,7 @@ import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import co.kr.sumai.func.loadPreferences
 import co.kr.sumai.net.SummaryRequest
@@ -32,9 +31,13 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main_content.*
+import kotlinx.android.synthetic.main.toolbar_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     var drawerToggle: ActionBarDrawerToggle? = null
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var adMobBannerID: String? = null
     private var adMobInterstitialID: String? = null
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
-    var ID = ""
+    var ID: String = ""
     private val record = 1
     private var summaryRequestCount = 0
     private var accountInformation: AccountInformation? = null
@@ -66,21 +69,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         initLayout()
         clickEvent()
-        var id: String? = loadPreferences(applicationContext,"loginData", "id")
-        if(id != "") {
-            service.loadAccount(id).enqueue(object: Callback<AccountInformation> {
+        ID = loadPreferences(applicationContext, "loginData", "id")
+        if(ID != "") {
+            service.loadAccount(ID).enqueue(object : Callback<AccountInformation> {
                 override fun onResponse(call: Call<AccountInformation>, response: Response<AccountInformation>) {
-                    if(response.isSuccessful) {
+                    if (response.isSuccessful) {
                         accountInformation = response.body()
+
+                        // avatar
+                        avatar()
                     }
                 }
 
                 override fun onFailure(call: Call<AccountInformation>, t: Throwable) {
                     Toast.makeText(applicationContext, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                    Log.e("tt",t.toString())
+                    Log.e("tt", t.toString())
                 }
             })
         }
+
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -190,22 +197,51 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val layoutLogin: LinearLayout = findViewById<LinearLayout>(R.id.layoutLogin)
         val imageViewAccount: ImageView = findViewById<ImageView>(R.id.imageViewAccount)
-        layoutLogin.visibility = View.INVISIBLE
-        imageViewAccount.setBackgroundColor(Color.GREEN)
         layoutLogin.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
         })
-        Glide.with(this)
-                .load("https://sumai-profile.s3.ap-northeast-2.amazonaws.com/image/0lgZQH2LSevz3nfUdTfsL0QEyZ4%3D.jpg")
-                .into(imageViewAccount)
 
         val layoutAccount: FrameLayout = findViewById<FrameLayout>(R.id.layoutAccount)
-//        layoutAccount.visibility = View.INVISIBLE
-        layoutLogin.setOnClickListener(View.OnClickListener {
+        layoutAccount.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
         })
+    }
+
+    private fun avatar() {
+        if(ID.isNotEmpty()) {  // 로그인 상태면
+            layoutLogin.visibility = View.INVISIBLE
+            layoutAccount.visibility = View.VISIBLE
+
+            // constraint 연결 변경
+
+            if(accountInformation!!.image.isNotEmpty()) {  // 프로필 이미지 있으면
+                Glide.with(this)
+                        .load(accountInformation!!.image)
+                        .circleCrop()
+                        .into(imageViewAccount)
+            } else {  // 프로필 이미지 없으면
+                val drawable = ContextCompat.getDrawable(this, R.drawable.circle) as GradientDrawable?
+                drawable!!.setColor(Color.RED)
+                imageViewAccount.setImageDrawable(drawable)
+
+                Glide.with(this)
+                        .load(drawable)
+                        .circleCrop()
+                        .placeholder(drawable)
+                        .into(imageViewAccount)
+
+                textViewName.text = accountInformation!!.name
+            }
+
+        }
+        else {
+            layoutLogin.visibility = View.VISIBLE
+            layoutAccount.visibility = View.INVISIBLE
+
+            // constraint 연결 변경
+        }
     }
 
     private fun summaryRequest(data: String) {
