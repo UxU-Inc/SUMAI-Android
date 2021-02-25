@@ -90,5 +90,43 @@
                 android:text="로그인" />
         </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/layoutAccount"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="m">
+
+            <ImageView
+                android:id="@+id/imageViewAccount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="3dp" />
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#FAFAFA"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:textStyle="bold"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:maxLength="3"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeStepGranularity="2sp"
+                tools:text="닉네임"
+                tools:targetApi="o" />
+        </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.Toolbar>

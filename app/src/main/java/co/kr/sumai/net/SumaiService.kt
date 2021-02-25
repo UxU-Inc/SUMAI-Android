@@ -18,6 +18,6 @@ interface SumaiService {
     @POST("/api/summary/request")
     fun getSummary(@Body summaryRequest: SummaryRequest): Call<SummaryResponse>
 
-    @POST("/api/sumaiMobile/account")
-    fun getLoginState(@Body SNSLoginRequest: Unit): Call<SNSLoginResponse>
+    @POST("/api/mobileAccount/snslogin")
+    fun getLoginState(@Body SNSLoginRequest: SNSLoginRequest): Call<SNSLoginResponse>
 }

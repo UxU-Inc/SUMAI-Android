@@ -9,6 +9,10 @@
     <string name="adaptive_interstitial_ad_unit_id">ca-app-pub-4995049534759533/1896912129</string>
     <string name="adaptive_interstitial_ad_unit_id_test">ca-app-pub-3940256099942544/1033173712</string>
 
+    <!-- 네이버 -->
+    <string name="naver_client_id">xkKNWU7uQDeXqvFCpYAU</string>
+    <string name="naver_client_secret">JRc_JGyio9</string>
+
     <!-- 페이스북 -->
     <string name="facebook_app_id">778515753087860</string>
     <string name="fb_login_protocol_scheme">fb778515753087860</string>

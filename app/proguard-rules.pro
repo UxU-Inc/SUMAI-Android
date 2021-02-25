@@ -28,6 +28,26 @@
 # 모든 경로와 파일 이름을 지정할 수 있습니다.
 -printconfiguration full-r8-config.txt
 
+# 네이버 sdk 제외
+-keep public class com.nhn.android.naverlogin.** {
+       public protected *;
+}
+
 # 카카오 sdk 제외
 -keep class com.kakao.sdk.**.model.* { <fields>; }
 -keep class * extends com.google.gson.TypeAdapter
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
