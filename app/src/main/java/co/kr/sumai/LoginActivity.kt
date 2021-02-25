@@ -3,6 +3,7 @@ package co.kr.sumai
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -119,7 +120,7 @@ class LoginActivity : AppCompatActivity() {
             })
         })
         buttonFindPassword.setOnClickListener(View.OnClickListener { // FindPasswordActivity로 이동
-            Log.i("FP", "click")
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sumai.co.kr/login/password/reset")))
         })
         buttonSignup.setOnClickListener(View.OnClickListener { // SignupActivity로 이동
             val intent = Intent(applicationContext, SignUpPage1Activity::class.java)

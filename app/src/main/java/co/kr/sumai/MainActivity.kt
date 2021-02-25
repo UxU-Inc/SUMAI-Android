@@ -20,11 +20,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import co.kr.sumai.func.deletePreferences
 import co.kr.sumai.func.loadPreferences
 import co.kr.sumai.net.SummaryRequest
 import co.kr.sumai.net.SummaryResponse
 import co.kr.sumai.net.service
 import com.bumptech.glide.Glide
+import com.facebook.login.LoginManager
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.initialization.InitializationStatus
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
@@ -32,11 +34,15 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.kakao.sdk.user.UserApiClient
+import com.nhn.android.naverlogin.OAuthLogin
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
     var drawerToggle: ActionBarDrawerToggle? = null
     var toolbar: Toolbar? = null
     private var mInterstitialAd // 애드몹 전면 광고
@@ -202,6 +208,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val layoutAccount: FrameLayout = findViewById<FrameLayout>(R.id.layoutAccount)
 //        layoutAccount.visibility = View.INVISIBLE
+        layoutAccount.setOnClickListener {
+            val popup = PopupMenu(this, layoutAccount)
+            popup.setOnMenuItemClickListener(this@MainActivity)
+            popup.menuInflater.inflate(R.menu.account_menu, popup.menu)
+            popup.show()
+        }
         layoutLogin.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
@@ -315,4 +327,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(Intent.createChooser(emailIntent, "의견 보내기"))
         }
     }
+
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.accountManage -> {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sumai.co.kr/login?url=https://sumai.co.kr/accounts")))
+                true
+            }
+            R.id.logout -> {
+                val SNSType = accountInformation?.type
+                val mOAuthLoginModule = OAuthLogin.getInstance()
+                mOAuthLoginModule.init(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.app_name))
+                when (SNSType) {
+                    "GOOGLE" -> Firebase.auth.signOut()
+                    "KAKAO" -> UserApiClient.instance.logout{}
+                    "NAVER" -> mOAuthLoginModule.logout(this);
+                    "FACEBOOK" -> LoginManager.getInstance().logOut()
+                }
+//                accountInformation = null
+//                deletePreferences(applicationContext,"loginData", "id")finish();
+                finish()
+                overridePendingTransition(0, 0);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                true
+            }
+            else -> false
+        }
+    }
+
 }
