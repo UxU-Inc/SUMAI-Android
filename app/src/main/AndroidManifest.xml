@@ -16,7 +16,7 @@
         <activity android:name=".SignUpPage1Activity" />
         <activity android:name=".SignUpPage2Activity" />
         <activity android:name=".SignUpPage3Activity" />
-        <activity android:name=".FindPasswordActivity" />
+        <activity android:name=".FindPasswordPage1Activity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".GuideActivity" />
         <activity
