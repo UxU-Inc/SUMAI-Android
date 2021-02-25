@@ -7,13 +7,14 @@ import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
+import co.kr.sumai.net.SignUpInforRequest
 import co.kr.sumai.spinner.HintSpinner
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SignUpPage2Activity : AppCompatActivity() {
-    private lateinit var infor: SignUpInfor
+    private lateinit var inforRequest: SignUpInforRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,22 +22,20 @@ class SignUpPage2Activity : AppCompatActivity() {
         initLayout()
         buttonNext.setOnClickListener(View.OnClickListener {
             if (!verify()) return@OnClickListener
-            infor.birthday = ""
-            infor.sex = ""
+
             val intent = Intent(applicationContext, SignUpPage3Activity::class.java)
-            intent.putExtra("infor", infor)
+            intent.putExtra("infor", inforRequest)
             startActivity(intent)
             overridePendingTransition(R.anim.right_in, R.anim.left_out)
             finish()
         })
-        infor = intent.getSerializableExtra("infor") as SignUpInfor
+        inforRequest = intent.getSerializableExtra("infor") as SignUpInforRequest
     }
 
     private fun initLayout() {
-        val adapter = HintSpinner<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.gender_array))
+        val adapter = HintSpinner<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.gender_array))
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGender.adapter = adapter
-        spinnerGender.setSelection(adapter.count)
         spinnerGender.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 if ("사용자 지정" == spinnerGender.getItemAtPosition(i)) {
@@ -60,10 +59,15 @@ class SignUpPage2Activity : AppCompatActivity() {
         editTextMonth.isSelected = false
         editTextDay.isSelected = false
         editTextGender.isSelected = false
+
+        return verifyBirthday() && verifyGender()
+    }
+
+    private fun verifyBirthday(): Boolean {
         val year = editTextYear.text.toString()
         val month = editTextMonth.text.toString()
         val day = editTextDay.text.toString()
-        val gender = spinnerGender.selectedItem as String
+
         var yearInt = 0
         var monthInt = 0
         var dayInt = 0
@@ -71,9 +75,11 @@ class SignUpPage2Activity : AppCompatActivity() {
             yearInt = year.toInt()
             monthInt = month.toInt()
             dayInt = day.toInt()
-        } catch (e: NumberFormatException) {
-        }
+        } catch (e: NumberFormatException) {}
+
         if (year == "" && month == "" && day == "") {
+            inforRequest.birthday = null
+            return true
         } else if (year == "" || month == "" || day == "") {
             textViewErrorBirthday.text = "생년월일을 정확히 입력해 주세요."
             textViewErrorBirthday.visibility = View.VISIBLE
@@ -90,12 +96,12 @@ class SignUpPage2Activity : AppCompatActivity() {
             textViewErrorBirthday.visibility = View.VISIBLE
             editTextDay.isSelected = true
         } else {
-            val birthdayString = String.format("%04d%02d%02d", yearInt, monthInt, dayInt)
-            val dateVerify = SimpleDateFormat("yyyyMMdd")
-            val birthday: Date
             try {
+                val birthdayString = String.format("%04d%02d%02d", yearInt, monthInt, dayInt)
+                val dateVerify = SimpleDateFormat("yyyyMMdd")
                 dateVerify.isLenient = false
-                birthday = dateVerify.parse(birthdayString)
+
+                val birthday: Date = dateVerify.parse(birthdayString)
                 val date = Date()
 
                 // 현재 날짜와 비교
@@ -105,7 +111,9 @@ class SignUpPage2Activity : AppCompatActivity() {
                     editTextYear.isSelected = true
                     editTextMonth.isSelected = true
                     editTextDay.isSelected = true
-                    return false
+                } else {
+                    inforRequest.birthday = birthdayString
+                    return true
                 }
             } catch (e: ParseException) {
                 textViewErrorBirthday.text = "올바른 생년월일을 입력해 주세요."
@@ -113,22 +121,32 @@ class SignUpPage2Activity : AppCompatActivity() {
                 editTextYear.isSelected = true
                 editTextMonth.isSelected = true
                 editTextDay.isSelected = true
-                return false
             }
-        }
-        if (gender == "사용자 지정" && editTextGender.text.toString() == "") {
-            textViewErrorGender.text = "사용자 지정 성별을 입력해주세요."
-            textViewErrorGender.visibility = View.VISIBLE
-            editTextGender.isSelected = true
-        } else {
-            return false
         }
         return false
     }
 
+    private fun verifyGender(): Boolean {
+        val gender = spinnerGender.selectedItem as String
+        return if (gender == "사용자 지정" && editTextGender.text.toString() == "") {
+            textViewErrorGender.text = "사용자 지정 성별을 입력해주세요."
+            textViewErrorGender.visibility = View.VISIBLE
+            editTextGender.isSelected = true
+            false
+        } else {
+            when {
+                spinnerGender.selectedItemPosition == 0 -> inforRequest.gender = "공개 안함"
+                spinnerGender.selectedItem == "사용자 지정" -> inforRequest.gender = editTextGender.text.toString()
+                else -> inforRequest.gender = spinnerGender.selectedItem.toString()
+            }
+            true
+        }
+    }
+
+
     private fun back() {
         val intent = Intent(applicationContext, SignUpPage1Activity::class.java)
-        intent.putExtra("infor", infor)
+        intent.putExtra("infor", inforRequest)
         startActivity(intent)
         overridePendingTransition(R.anim.left_in, R.anim.right_out)
     }

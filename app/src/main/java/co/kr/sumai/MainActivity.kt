@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Display
 import android.view.MenuItem
 import android.view.View
@@ -21,6 +22,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import co.kr.sumai.func.loadPreferences
 import co.kr.sumai.net.SummaryRequest
 import co.kr.sumai.net.SummaryResponse
 import co.kr.sumai.net.service
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var ID = ""
     private val record = 1
     private var summaryRequestCount = 0
+    private var accountInformation: AccountInformation? = null
 
     //뒤로 버튼 두번 연속 클릭 시 종료
     private var time: Long = 0
@@ -64,7 +67,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         initLayout()
         clickEvent()
+        var id: String? = loadPreferences(applicationContext,"loginData", "id")
+        if(id != "") {
+            service.loadAccount(id).enqueue(object: Callback<AccountInformation> {
+                override fun onResponse(call: Call<AccountInformation>, response: Response<AccountInformation>) {
+                    if(response.isSuccessful) {
+                        accountInformation = response.body()
+                    }
+                }
 
+                override fun onFailure(call: Call<AccountInformation>, t: Throwable) {
+                    Toast.makeText(applicationContext, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    Log.e("tt",t.toString())
+                }
+            })
+        }
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
