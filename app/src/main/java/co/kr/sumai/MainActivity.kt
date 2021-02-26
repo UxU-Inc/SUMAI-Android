@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Display
 import android.view.MenuItem
 import android.view.View
@@ -43,6 +42,7 @@ import kotlinx.android.synthetic.main.toolbar_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
     var drawerToggle: ActionBarDrawerToggle? = null
@@ -60,11 +60,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     //뒤로 버튼 두번 연속 클릭 시 종료
     private var time: Long = 0
     override fun onBackPressed() {
-        if (System.currentTimeMillis() - time >= 2000) {
-            time = System.currentTimeMillis()
-            Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
-        } else if (System.currentTimeMillis() - time < 2000) {
-            this@MainActivity.finish()
+        if (dl_main_drawer_root.isDrawerOpen(GravityCompat.START)) {
+            dl_main_drawer_root.closeDrawer(GravityCompat.START)
+        } else {
+            if (System.currentTimeMillis() - time >= 2000) {
+                time = System.currentTimeMillis()
+                Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
+            } else if (System.currentTimeMillis() - time < 2000) {
+                this@MainActivity.finish()
+            }
         }
     }
 
@@ -74,23 +78,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         initLayout()
         clickEvent()
+
         ID = loadPreferences(applicationContext, "loginData", "id")
-        if(ID != "") {
+        if (ID.isNotEmpty()) {
             service.loadAccount(ID).enqueue(object : Callback<AccountInformation> {
                 override fun onResponse(call: Call<AccountInformation>, response: Response<AccountInformation>) {
                     if (response.isSuccessful) {
                         accountInformation = response.body()
 
-                        // avatar
-                        avatar()
+                        setAvatar()
                     }
                 }
 
                 override fun onFailure(call: Call<AccountInformation>, t: Throwable) {
-                    Toast.makeText(applicationContext, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                    Log.e("tt", t.toString())
+                    Toast.makeText(applicationContext, "로그인 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    layoutLogin.visibility = View.VISIBLE
                 }
             })
+        } else {
+            layoutLogin.visibility = View.VISIBLE
         }
 
         // Firebase
@@ -192,6 +198,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return false
     }
 
+    lateinit var layoutLogin: LinearLayout
+    lateinit var layoutAccount: FrameLayout
+
     private fun clickEvent() {
         // toolbar
         val buttonNews: ImageButton = findViewById<ImageButton>(R.id.buttonNews)
@@ -200,14 +209,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         })
 
-        val layoutLogin: LinearLayout = findViewById<LinearLayout>(R.id.layoutLogin)
+        layoutLogin = findViewById<LinearLayout>(R.id.layoutLogin)
+        layoutLogin.visibility = View.GONE
         layoutLogin.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
         })
 
-        val layoutAccount: FrameLayout = findViewById<FrameLayout>(R.id.layoutAccount)
-//        layoutAccount.visibility = View.INVISIBLE
+        layoutAccount = findViewById<FrameLayout>(R.id.layoutAccount)
+        layoutAccount.visibility = View.GONE
         layoutAccount.setOnClickListener {
             val popup = PopupMenu(this, layoutAccount)
             popup.setOnMenuItemClickListener(this@MainActivity)
@@ -220,39 +230,54 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
     }
 
-    private fun avatar() {
-        if(ID.isNotEmpty()) {  // 로그인 상태면
-            layoutLogin.visibility = View.INVISIBLE
-            layoutAccount.visibility = View.VISIBLE
+    private fun setAvatar() {
+        layoutAccount.visibility = View.VISIBLE
 
-            // constraint 연결 변경
+        if (accountInformation!!.image.isNotEmpty()) {  // 프로필 이미지 있으면
+            Glide.with(this)
+                    .load(accountInformation!!.image)
+                    .circleCrop()
+                    .into(imageViewAccount)
+        } else {  // 프로필 이미지 없으면
+            val drawable = ContextCompat.getDrawable(this, R.drawable.circle) as GradientDrawable?
+            drawable!!.setColor(Color.parseColor("#" + ID.toMD5().substring(1, 7)))
+            imageViewAccount.setImageDrawable(drawable)
 
-            if(accountInformation!!.image.isNotEmpty()) {  // 프로필 이미지 있으면
-                Glide.with(this)
-                        .load(accountInformation!!.image)
-                        .circleCrop()
-                        .into(imageViewAccount)
-            } else {  // 프로필 이미지 없으면
-                val drawable = ContextCompat.getDrawable(this, R.drawable.circle) as GradientDrawable?
-                drawable!!.setColor(Color.RED)
-                imageViewAccount.setImageDrawable(drawable)
+            Glide.with(this)
+                    .load(drawable)
+                    .circleCrop()
+                    .into(imageViewAccount)
 
-                Glide.with(this)
-                        .load(drawable)
-                        .circleCrop()
-                        .placeholder(drawable)
-                        .into(imageViewAccount)
+            textViewName.text = reName(accountInformation!!.name)
+        }
+    }
 
-                textViewName.text = accountInformation!!.name
+    fun String.toMD5(): String {
+        val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
+        return bytes.toHex()
+    }
+    fun ByteArray.toHex(): String {
+        return joinToString("") { "%02x".format(it) }
+    }
+
+    fun reName(name: String): String {
+        var reName: String = ""
+
+        val pattern = Regex(pattern = "[a-zA-Z0-9]")
+
+        if(pattern.matches(name.first().toString())) {
+            reName = name.first().toString()
+        } else if(3 <= name.length) {
+            if(pattern.matches(name.substring(name.length - 2, name.length))) {
+                reName = name.first().toString()
+            } else {
+                reName = name.substring(name.length - 2, name.length)
             }
-
+        } else {
+            reName = name
         }
-        else {
-            layoutLogin.visibility = View.VISIBLE
-            layoutAccount.visibility = View.INVISIBLE
 
-            // constraint 연결 변경
-        }
+        return reName
     }
 
     private fun summaryRequest(data: String) {
@@ -375,12 +400,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 mOAuthLoginModule.init(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.app_name))
                 when (SNSType) {
                     "GOOGLE" -> Firebase.auth.signOut()
-                    "KAKAO" -> UserApiClient.instance.logout{}
+                    "KAKAO" -> UserApiClient.instance.logout {}
                     "NAVER" -> mOAuthLoginModule.logout(this);
                     "FACEBOOK" -> LoginManager.getInstance().logOut()
                 }
                 accountInformation = null
-                deletePreferences(applicationContext,"loginData", "id")
+                deletePreferences(applicationContext, "loginData", "id")
                 finish()
                 overridePendingTransition(0, 0);
                 startActivity(intent);
