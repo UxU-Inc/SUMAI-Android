@@ -64,34 +64,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initTag() {
-        // get login infor
-        val loginInfor = service.info
-        loginInfor.enqueue(object : Callback<LoginInforResponse> {
-            override fun onResponse(call: Call<LoginInforResponse>, response: Response<LoginInforResponse>) {
-                if (!response.isSuccessful) {
-                    try {
-                        val jObjectError = JSONObject(response.errorBody()!!.string())
-                        Toast.makeText(this@LoginActivity, jObjectError.getString("error"), Toast.LENGTH_SHORT).show()
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-                    return
-                }
-                response.body().toString()
-            }
 
-            override fun onFailure(call: Call<LoginInforResponse>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, "다시 시도해 주세요.", Toast.LENGTH_SHORT).show()
-            }
-        })
         buttonLogin.setOnClickListener(View.OnClickListener {
             val email = editTextEmail.getText().toString()
             val password = editTextPassword.getText().toString()
-
-            // 제한 사항 추가
-
 
             // editTextEmail, editTextPassword를 https//sumai.co.kr/api/loginMob 으로 전송
             val getObject = service.postLogin(LoginRequest(email, password))
@@ -266,7 +242,7 @@ class LoginActivity : AppCompatActivity() {
         // 사용자 정보 요청 (기본)
         UserApiClient.instance.me { user, error ->
             if (error != null) {
-                Log.e("카카오", "사용자 정보 요청 실패", error)
+//                Log.e("카카오", "사용자 정보 요청 실패", error)
             }
             else if (user != null) {
                 val SNSType = "kakao"
@@ -280,11 +256,11 @@ class LoginActivity : AppCompatActivity() {
 
                 SNSLoginRequestFun(SNSType, email, name, id, gender, birth, ageRange, imageURL)
 
-                Log.e("카카오", "사용자 정보 요청 성공" +
-                        "\n회원번호: ${id}" +
-                        "\n이메일: ${email}" +
-                        "\n닉네임: ${name}" +
-                        "\n프로필사진: ${imageURL}")
+//                Log.e("카카오", "사용자 정보 요청 성공" +
+//                        "\n회원번호: ${id}" +
+//                        "\n이메일: ${email}" +
+//                        "\n닉네임: ${name}" +
+//                        "\n프로필사진: ${imageURL}")
             }
         }
     }
@@ -403,8 +379,6 @@ class LoginActivity : AppCompatActivity() {
         else if (SNSType == "FACEBOOK") SNSName = "페이스북"
         val finalSNSName = SNSName
 
-        Log.e("Requset", "\n"+SNSType+"\n"+email+"\n"+id+"\n"+gender+"\n"+birth+"\n"+ageRange+"\n"+imageURL)
-
         val res = service.getLoginState(SNSLoginRequest(SNSType, email, name, id, gender, birth, ageRange, imageURL))
         res.enqueue(object : Callback<SNSLoginResponse> {
             override fun onResponse(call: Call<SNSLoginResponse>, response: Response<SNSLoginResponse>) {
@@ -430,7 +404,9 @@ class LoginActivity : AppCompatActivity() {
                         LoginManager.getInstance().logOut()
                     }
                 }
-                finish()
+                intent = Intent(applicationContext, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
 
             override fun onFailure(call: Call<SNSLoginResponse>, t: Throwable) {

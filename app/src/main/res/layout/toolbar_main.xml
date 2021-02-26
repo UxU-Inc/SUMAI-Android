@@ -49,85 +49,90 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toRightOf="@id/textViewLogo"
-            app:layout_constraintRight_toLeftOf="@id/layoutLogin"
+            app:layout_constraintRight_toLeftOf="@id/account"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_featured_play_list_24"
             tools:targetApi="m" />
 
-        <LinearLayout
-            android:id="@+id/layoutLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/style_round"
-            android:foreground="?attr/selectableItemBackground"
-            android:padding="5dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="m">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="5dp"
-                app:srcCompat="@drawable/ic_baseline_account_circle_24" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:fontFamily="@font/noto_sans_kr_medium"
-                android:includeFontPadding="false"
-                android:text="로그인" />
-        </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/layoutAccount"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:clickable="true"
-            android:focusable="true"
+            android:id="@+id/account"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="m">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageViewAccount"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/circle"
-                android:layout_marginVertical="3dp"/>
-
-            <TextView
-                android:id="@+id/textViewName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3dp"
+            <LinearLayout
+                android:id="@+id/layoutLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/style_round"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="#FAFAFA"
-                android:fontFamily="@font/noto_sans_kr_medium"
-                android:textStyle="bold"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:maxLength="3"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeMaxTextSize="20sp"
-                android:autoSizeStepGranularity="2sp"
-                tools:text="닉네임"
-                tools:targetApi="o" />
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                tools:targetApi="m">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    app:srcCompat="@drawable/ic_baseline_account_circle_24" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="로그인"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/layoutAccount"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center"
+                android:clickable="true"
+                android:focusable="true"
+                tools:targetApi="m">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageViewAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="3dp"
+                    android:src="@drawable/circle" />
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="3dp"
+                    android:autoSizeMaxTextSize="20sp"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:maxLength="3"
+                    android:maxLines="1"
+                    android:textColor="#FAFAFA"
+                    android:textStyle="bold"
+                    tools:targetApi="o"
+                    tools:text="닉네임" />
+            </FrameLayout>
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
