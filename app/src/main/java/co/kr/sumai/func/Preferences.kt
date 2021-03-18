@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
         val pref = context.getSharedPreferences(name, AppCompatActivity.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putString(key, defValue)
-        editor.commit()
+        editor.apply()
     }
 
     // 값 삭제하기
@@ -21,5 +21,5 @@ import androidx.appcompat.app.AppCompatActivity
         val pref = context.getSharedPreferences(name, AppCompatActivity.MODE_PRIVATE)
         val editor = pref.edit()
         editor.remove(key)
-        editor.commit()
+        editor.apply()
     }

@@ -80,7 +80,8 @@ dependencies {
 
     implementation 'com.naver.nid:naveridlogin-android-sdk:4.2.6' // 네이버 아이디로 로그인
 
-    implementation 'com.facebook.android:facebook-android-sdk:4.42.0' // facebook
+    implementation 'com.facebook.android:facebook-android-sdk:[8,9)' // facebook
+    implementation 'com.facebook.android:facebook-login:[8.1)'
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
