@@ -18,7 +18,7 @@
         <activity android:name=".SignUpPage3Activity" />
         <activity android:name=".FindPasswordPage1Activity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".GuideActivity" />
+        <activity android:name=".GuideActivity" android:hardwareAccelerated="true"/>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

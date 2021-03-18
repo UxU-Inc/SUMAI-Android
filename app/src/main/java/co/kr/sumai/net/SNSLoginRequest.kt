@@ -2,6 +2,7 @@ package co.kr.sumai.net
 
 class SNSLoginRequest(
         private val SNSType: String,
+        private val accessToken: String,
         private val email: String?,
         private val name: String?,
         private val id: String?,

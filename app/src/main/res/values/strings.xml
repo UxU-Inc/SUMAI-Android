@@ -14,7 +14,7 @@
     <string name="naver_client_secret">JRc_JGyio9</string>
 
     <!-- 페이스북 -->
-    <string name="facebook_app_id">778515753087860</string>
-    <string name="fb_login_protocol_scheme">fb778515753087860</string>
+    <string name="facebook_app_id">224105085999012</string>
+    <string name="fb_login_protocol_scheme">fb224105085999012</string>
 
 </resources>

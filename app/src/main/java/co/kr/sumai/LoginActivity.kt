@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var firebaseAuth: FirebaseAuth
 
-    private lateinit var mOAuthLoginModule : OAuthLogin
+    private lateinit var mOAuthLoginModule: OAuthLogin
     private lateinit var mContext: Context
 
     private var facebookCallbackManager: CallbackManager? = null
@@ -86,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
                         return
                     }
                     // 로그인 성공
-                    savePreferences(applicationContext,"loginData", "id", response.body()?.id)
+                    savePreferences(applicationContext, "loginData", "id", response.body()?.id)
                     finish()
                 }
 
@@ -133,13 +133,14 @@ class LoginActivity : AppCompatActivity() {
 
         buttonLoginFacebook!!.setOnClickListener { btn_facebook_login_dumy!!.performClick() }
         facebookCallbackManager = CallbackManager.Factory.create()
-        btn_facebook_login_dumy!!.setReadPermissions(Arrays.asList("public_profile", "email"))
+        btn_facebook_login_dumy!!.setPermissions(Arrays.asList("public_profile", "email"))
         btn_facebook_login_dumy!!.registerCallback(facebookCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 val graphRequest = GraphRequest.newMeRequest(
                         loginResult.accessToken
                 ) { `object`, response ->
-                    val SNSType = "facebook"
+                    val SNSType = "FACEBOOK"
+                    val accessToken = loginResult.accessToken.token
                     val email = getFacebookUserInfo(response, "email")
                     val name = getFacebookUserInfo(response, "name")
                     val id = getFacebookUserInfo(response, "id")
@@ -152,7 +153,8 @@ class LoginActivity : AppCompatActivity() {
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
-                    SNSLoginRequestFun(SNSType, email, name, id, gender, birth, ageRange, imageURL)
+                    Log.e("facebook", accessToken + "\n" + email + "\n" + name + "\n" + id + "\n" + gender + "\n" + birth + "\n" + ageRange + "\n" + imageURL)
+                    SNSLoginRequestFun(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL)
                 }
                 val parameters = Bundle()
                 parameters.putString("fields", "id,name,email,gender,birthday,age_range,picture")
@@ -207,15 +209,16 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // 로그인 성공, 로그인한 사용자 정보로 UI 업데이트
                         val user = firebaseAuth.currentUser
-                        val SNSType = "google"
+                        val SNSType = "GOOGLE"
+                        val accessToken = account.idToken.toString()
                         val email = user!!.email
                         val name = user.displayName
                         val id = account.id
-                        val gender: String = ""
-                        val birth: String = ""
-                        val ageRange: String = ""
+                        val gender: String? = null
+                        val birth: String? = null
+                        val ageRange: String? = null
                         val imageURL = user.photoUrl.toString()
-                        SNSLoginRequestFun(SNSType, email, name, id, gender, birth, ageRange, imageURL)
+                        SNSLoginRequestFun(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL)
                     } else {
                         // 로그인에 실패하면 사용자에게 메시지를 표시
                         Toast.makeText(applicationContext, "구글 로그인 인증에 실패했습니다.", Toast.LENGTH_SHORT).show()
@@ -226,12 +229,36 @@ class LoginActivity : AppCompatActivity() {
     private fun kakaoLogin() {
         // 로그인 공통 callback 구성
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-//            if (error != null) {
-//                Log.e("카카오", "로그인 실패", error)
-//            }
-//            else if (token != null) {
-//                Log.e("카카오", "로그인 성공 ${token.accessToken}")
-//            }
+            Log.e("kakao", token.toString())
+            if (error != null) {
+                Log.e("카카오", "로그인 실패", error)
+            } else if (token != null) {
+                Log.e("카카오", "로그인 성공 ${token.accessToken}")
+                // 사용자 정보 요청 (기본)
+                UserApiClient.instance.me { user, error ->
+                    if (error != null) {
+//                        Log.e("카카오", "사용자 정보 요청 실패", error)
+                    } else if (user != null) {
+                        val SNSType = "KAKAO"
+                        val accessToken = token.accessToken
+                        val email = user.kakaoAccount?.email
+                        val name = user.kakaoAccount?.profile?.nickname
+                        val id = user.id.toString()
+                        val gender: String = ""
+                        val birth: String = ""
+                        val ageRange: String = ""
+                        val imageURL = user.kakaoAccount?.profile?.thumbnailImageUrl
+
+                        SNSLoginRequestFun(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL)
+
+//                        Log.e("카카오", "사용자 정보 요청 성공" +
+//                                "\n회원번호: ${id}" +
+//                                "\n이메일: ${email}" +
+//                                "\n닉네임: ${name}" +
+//                                "\n프로필사진: ${imageURL}")
+                    }
+                }
+            }
         }
         // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
         if (LoginClient.instance.isKakaoTalkLoginAvailable(this)) {
@@ -239,30 +266,7 @@ class LoginActivity : AppCompatActivity() {
         } else {
             LoginClient.instance.loginWithKakaoAccount(this, callback = callback)
         }
-        // 사용자 정보 요청 (기본)
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-//                Log.e("카카오", "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
-                val SNSType = "kakao"
-                val email = user.kakaoAccount?.email
-                val name = user.kakaoAccount?.profile?.nickname
-                val id = user.id.toString()
-                val gender: String = ""
-                val birth: String = ""
-                val ageRange: String = ""
-                val imageURL = user.kakaoAccount?.profile?.thumbnailImageUrl
 
-                SNSLoginRequestFun(SNSType, email, name, id, gender, birth, ageRange, imageURL)
-
-//                Log.e("카카오", "사용자 정보 요청 성공" +
-//                        "\n회원번호: ${id}" +
-//                        "\n이메일: ${email}" +
-//                        "\n닉네임: ${name}" +
-//                        "\n프로필사진: ${imageURL}")
-            }
-        }
     }
 
     @SuppressLint("HandlerLeak")
@@ -291,7 +295,7 @@ class LoginActivity : AppCompatActivity() {
                     val ageRange = getNaverUserInfo(userInfo, "age")
                     val imageURL = getNaverUserInfo(userInfo, "profile_image")
 
-                    SNSLoginRequestFun(SNSType, email, name, id, gender, birth, ageRange, imageURL)
+                    SNSLoginRequestFun(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL)
                 }
 
             } else {
@@ -370,7 +374,7 @@ class LoginActivity : AppCompatActivity() {
         return attr
     }
 
-    private fun SNSLoginRequestFun(SNSType: String, email: String?, name: String?, id: String?, gender: String?, birth: String?, ageRange: String?, imageURL: String?) {
+    private fun SNSLoginRequestFun(SNSType: String, accessToken: String, email: String?, name: String?, id: String?, gender: String?, birth: String?, ageRange: String?, imageURL: String?) {
 
         var SNSName = ""
         if (SNSType == "GOOGLE") SNSName = "구글"
@@ -379,40 +383,49 @@ class LoginActivity : AppCompatActivity() {
         else if (SNSType == "FACEBOOK") SNSName = "페이스북"
         val finalSNSName = SNSName
 
-        val res = service.getLoginState(SNSLoginRequest(SNSType, email, name, id, gender, birth, ageRange, imageURL))
+        val res = service.getLoginState(SNSLoginRequest(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL))
         res.enqueue(object : Callback<SNSLoginResponse> {
             override fun onResponse(call: Call<SNSLoginResponse>, response: Response<SNSLoginResponse>) {
                 if (response.body() != null) {
-                    if(response.body()!!.complete == 1) {
+                    Log.e("test", response.body()!!.complete.toString())
+                    if (response.body()!!.complete == 1) {
                         savePreferences(applicationContext, "loginData", "id", id)
                         Toast.makeText(applicationContext, "$finalSNSName 로그인되었습니다.", Toast.LENGTH_SHORT).show()
-                    } else if(response.body()!!.complete == 2) {
+                        refreshActivity()
+                    } else if (response.body()!!.complete == 2) {
+                        savePreferences(applicationContext, "loginData", "id", id)
                         Toast.makeText(applicationContext, "$finalSNSName 회원 가입되었습니다.", Toast.LENGTH_SHORT).show()
-                    } else if(response.body()!!.complete == -1) {
+                        refreshActivity()
+                    } else if (response.body()!!.complete == -1) {
                         Toast.makeText(applicationContext, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    } else if (response.body()!!.complete == -4) {
+                        Toast.makeText(applicationContext, "로그인 에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(applicationContext, "$finalSNSName 로그인 중 서버 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                     if (SNSType == "GOOGLE") {
                         Firebase.auth.signOut()
                     } else if (SNSType == "KAKAO") {
-                        UserApiClient.instance.logout{}
+                        UserApiClient.instance.logout {}
                     } else if (SNSType == "NAVER") {
                         mOAuthLoginModule.logout(mContext);
                     } else if (SNSType == "FACEBOOK") {
                         LoginManager.getInstance().logOut()
                     }
+                    refreshActivity()
                 }
-                intent = Intent(applicationContext, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
             }
 
             override fun onFailure(call: Call<SNSLoginResponse>, t: Throwable) {
                 Toast.makeText(applicationContext, "$finalSNSName 로그인 중 서버 접속 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun refreshActivity() {
+        intent = Intent(applicationContext, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
