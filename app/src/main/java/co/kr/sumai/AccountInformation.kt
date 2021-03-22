@@ -7,5 +7,4 @@ class AccountInformation {
     val gender = ""
     val birthday = ""
     val image = ""
-
 }
