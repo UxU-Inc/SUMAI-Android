@@ -130,7 +130,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             editTextSummary.setText("")
             imageButtonClear.visibility = View.INVISIBLE
         })
-        imageButtonSummary.setOnClickListener(View.OnClickListener { summaryRequest(editTextSummary.getText().toString()) })
+        imageButtonSummary.setOnClickListener(View.OnClickListener {
+            if (0 < editTextSummary.getText().toString().length) {
+                summaryRequest(editTextSummary.getText().toString())
+            }
+            else {
+                Toast.makeText(applicationContext, "요약할 텍스트를 입력하세요", Toast.LENGTH_SHORT).show()
+            }
+        })
         editTextSummary.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 // 입력 변화 시
@@ -225,10 +232,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             popup.menuInflater.inflate(R.menu.account_menu, popup.menu)
             popup.show()
         }
-        layoutLogin.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
-        })
     }
 
     private fun setAvatar() {

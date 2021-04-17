@@ -1330,7 +1330,7 @@
 -dontwarn androidx.room.paging.**
 
 # End of content from C:\Users\USER\.gradle\caches\transforms-2\files-2.1\582bf2fababfc8cd5a540a26ab4f2751\room-runtime-2.1.0\proguard.txt
-# The proguard configuration file for the following section is C:\Users\USER\.gradle\caches\transforms-2\files-2.1\7614dbbada1cbe50f23e2c2fbcca1f3a\core-1.5.0-beta02\proguard.txt
+# The proguard configuration file for the following section is C:\Users\USER\.gradle\caches\transforms-2\files-2.1\f8ac43a01c69cec891366ba32fd6b921\core-1.6.0-alpha02\proguard.txt
 # Never inline methods, but allow shrinking and obfuscation.
 -keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.ViewCompat$Api* {
   <methods>;
@@ -1341,8 +1341,11 @@
 -keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.app.NotificationCompat$*$Api*Impl {
   <methods>;
 }
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.os.UserHandleCompat$Api*Impl {
+  <methods>;
+}
 
-# End of content from C:\Users\USER\.gradle\caches\transforms-2\files-2.1\7614dbbada1cbe50f23e2c2fbcca1f3a\core-1.5.0-beta02\proguard.txt
+# End of content from C:\Users\USER\.gradle\caches\transforms-2\files-2.1\f8ac43a01c69cec891366ba32fd6b921\core-1.6.0-alpha02\proguard.txt
 # The proguard configuration file for the following section is C:\Users\USER\.gradle\caches\transforms-2\files-2.1\1e6c662944d5889df3f15f06bc8d8069\versionedparcelable-1.1.1\proguard.txt
 -keep class * implements androidx.versionedparcelable.VersionedParcelable
 -keep public class android.support.**Parcelizer { *; }
