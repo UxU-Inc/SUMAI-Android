@@ -1,6 +1,6 @@
 package co.kr.sumai.net
 
-class SNSLoginResponse {
-    val complete = 0
-    val message = ""
-}
+data class SNSLoginResponse (
+    val complete: Int = 0,
+    val message: String = ""
+)
