@@ -1,6 +1,7 @@
 package co.kr.sumai.net
 
-class SummaryRequest(
-        private val data: String,
-        private val id: String,
-        private val record: Int)
+data class SummaryRequest(
+        val data: String,
+        val id: String,
+        val record: Int
+)
