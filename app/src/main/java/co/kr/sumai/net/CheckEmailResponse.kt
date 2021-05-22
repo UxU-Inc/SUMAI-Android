@@ -1,5 +1,5 @@
 package co.kr.sumai.net
 
-class CheckEmailResponse {
-    val isSuccess = false
-}
+data class CheckEmailResponse (
+    val isSuccess: Boolean = false
+)
