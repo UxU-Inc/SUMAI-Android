@@ -11,9 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import co.kr.sumai.func.savePreferences
 import co.kr.sumai.net.*
-import com.facebook.*
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,9 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.kakao.sdk.auth.LoginClient
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.user.UserApiClient
 import com.nhn.android.naverlogin.OAuthLogin
 import com.nhn.android.naverlogin.OAuthLoginHandler
 import kotlinx.android.synthetic.main.activity_login.*
@@ -52,8 +46,6 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var mOAuthLoginModule: OAuthLogin
     private lateinit var mContext: Context
-
-    private var facebookCallbackManager: CallbackManager? = null
 
     override fun onStart() {
         super.onStart()
@@ -121,52 +113,10 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth = Firebase.auth
         buttonLoginGoogle!!.setOnClickListener { googleLogin() }
 
-
-        buttonLoginKakao!!.setOnClickListener { kakaoLogin() }
-
-
         mContext = this
         mOAuthLoginModule = OAuthLogin.getInstance()
         mOAuthLoginModule.init(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.app_name))
         buttonLoginNaver!!.setOnClickListener { mOAuthLoginModule.startOauthLoginActivity(this, mOAuthLoginHandler); }
-
-
-        buttonLoginFacebook!!.setOnClickListener { btn_facebook_login_dumy!!.performClick() }
-        facebookCallbackManager = CallbackManager.Factory.create()
-        btn_facebook_login_dumy!!.setPermissions(Arrays.asList("public_profile", "email"))
-        btn_facebook_login_dumy!!.registerCallback(facebookCallbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                val graphRequest = GraphRequest.newMeRequest(
-                        loginResult.accessToken
-                ) { `object`, response ->
-                    val SNSType = "FACEBOOK"
-                    val accessToken = loginResult.accessToken.token
-                    val email = getFacebookUserInfo(response, "email")
-                    val name = getFacebookUserInfo(response, "name")
-                    val id = getFacebookUserInfo(response, "id")
-                    val gender = getFacebookUserInfo(response, "gender")
-                    val birth = getFacebookUserInfo(response, "birth")
-                    val ageRange = getFacebookUserInfo(response, "ageRange")
-                    var imageURL: String? = null
-                    try {
-                        imageURL = response.jsonObject.getJSONObject("picture").getJSONObject("data").getString("url")
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                    Log.e("facebook", accessToken + "\n" + email + "\n" + name + "\n" + id + "\n" + gender + "\n" + birth + "\n" + ageRange + "\n" + imageURL)
-                    SNSLoginRequestFun(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL)
-                }
-                val parameters = Bundle()
-                parameters.putString("fields", "id,name,email,gender,birthday,age_range,picture")
-                graphRequest.parameters = parameters
-                graphRequest.executeAsync()
-            }
-
-            override fun onCancel() {}
-            override fun onError(error: FacebookException) {
-                Log.e("LoginErr", error.toString())
-            }
-        })
     }
 
     private fun googleLogin() {
@@ -197,9 +147,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "구글 로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-
-        // facebook
-        facebookCallbackManager!!.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
@@ -224,49 +171,6 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "구글 로그인 인증에 실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
-    }
-
-    private fun kakaoLogin() {
-        // 로그인 공통 callback 구성
-        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            Log.e("kakao", token.toString())
-            if (error != null) {
-                Log.e("카카오", "로그인 실패", error)
-            } else if (token != null) {
-                Log.e("카카오", "로그인 성공 ${token.accessToken}")
-                // 사용자 정보 요청 (기본)
-                UserApiClient.instance.me { user, error ->
-                    if (error != null) {
-//                        Log.e("카카오", "사용자 정보 요청 실패", error)
-                    } else if (user != null) {
-                        val SNSType = "KAKAO"
-                        val accessToken = token.accessToken
-                        val email = user.kakaoAccount?.email
-                        val name = user.kakaoAccount?.profile?.nickname
-                        val id = user.id.toString()
-                        val gender: String = ""
-                        val birth: String = ""
-                        val ageRange: String = ""
-                        val imageURL = user.kakaoAccount?.profile?.thumbnailImageUrl
-
-                        SNSLoginRequestFun(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL)
-
-//                        Log.e("카카오", "사용자 정보 요청 성공" +
-//                                "\n회원번호: ${id}" +
-//                                "\n이메일: ${email}" +
-//                                "\n닉네임: ${name}" +
-//                                "\n프로필사진: ${imageURL}")
-                    }
-                }
-            }
-        }
-        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        if (LoginClient.instance.isKakaoTalkLoginAvailable(this)) {
-            LoginClient.instance.loginWithKakaoTalk(this, callback = callback)
-        } else {
-            LoginClient.instance.loginWithKakaoAccount(this, callback = callback)
-        }
-
     }
 
     @SuppressLint("HandlerLeak")
@@ -364,23 +268,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun getFacebookUserInfo(response: GraphResponse, attribute: String): String? {
-        var attr: String? = null
-        try {
-            attr = response.jsonObject.getString(attribute)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return attr
-    }
-
     private fun SNSLoginRequestFun(SNSType: String, accessToken: String, email: String?, name: String?, id: String?, gender: String?, birth: String?, ageRange: String?, imageURL: String?) {
 
         var SNSName = ""
         if (SNSType == "GOOGLE") SNSName = "구글"
-        else if (SNSType == "KAKAO") SNSName = "카카오"
         else if (SNSType == "NAVER") SNSName = "네이버"
-        else if (SNSType == "FACEBOOK") SNSName = "페이스북"
         val finalSNSName = SNSName
 
         val res = service.getLoginState(SNSLoginRequest(SNSType, accessToken, email, name, id, gender, birth, ageRange, imageURL))
@@ -405,12 +297,8 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "$finalSNSName 로그인 중 서버 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                     if (SNSType == "GOOGLE") {
                         Firebase.auth.signOut()
-                    } else if (SNSType == "KAKAO") {
-                        UserApiClient.instance.logout {}
                     } else if (SNSType == "NAVER") {
                         mOAuthLoginModule.logout(mContext);
-                    } else if (SNSType == "FACEBOOK") {
-                        LoginManager.getInstance().logOut()
                     }
                     refreshActivity()
                 }
