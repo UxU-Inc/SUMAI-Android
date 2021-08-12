@@ -151,8 +151,12 @@
 -keep class com.kakao.sdk.**.model.* { <fields>; }
 -keep class * extends com.google.gson.TypeAdapter
 
+# 구글 로그인 제외
+-keep class com.google.android.gms.internal.** { *; }
+
 # retrofit
 -keep class co.kr.sumai.net** { *; }
+-keep class co.kr.sumai.AccountInformation** { *; }
 
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule {
@@ -1336,7 +1340,7 @@
 -dontwarn androidx.room.paging.**
 
 # End of content from C:\Users\USER\.gradle\caches\transforms-2\files-2.1\582bf2fababfc8cd5a540a26ab4f2751\room-runtime-2.1.0\proguard.txt
-# The proguard configuration file for the following section is C:\Users\USER\.gradle\caches\transforms-2\files-2.1\fe04f58aaf30d4928260720bc758d31a\core-1.6.0-rc01\proguard.txt
+# The proguard configuration file for the following section is C:\Users\USER\.gradle\caches\transforms-2\files-2.1\c0756a2c95ad880fa23a1ea7ec5017d7\core-1.7.0-alpha01\proguard.txt
 # Never inline methods, but allow shrinking and obfuscation.
 -keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.ViewCompat$Api* {
   <methods>;
@@ -1351,7 +1355,7 @@
   <methods>;
 }
 
-# End of content from C:\Users\USER\.gradle\caches\transforms-2\files-2.1\fe04f58aaf30d4928260720bc758d31a\core-1.6.0-rc01\proguard.txt
+# End of content from C:\Users\USER\.gradle\caches\transforms-2\files-2.1\c0756a2c95ad880fa23a1ea7ec5017d7\core-1.7.0-alpha01\proguard.txt
 # The proguard configuration file for the following section is C:\Users\USER\.gradle\caches\transforms-2\files-2.1\1e6c662944d5889df3f15f06bc8d8069\versionedparcelable-1.1.1\proguard.txt
 -keep class * implements androidx.versionedparcelable.VersionedParcelable
 -keep public class android.support.**Parcelizer { *; }

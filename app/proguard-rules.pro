@@ -37,8 +37,12 @@
 -keep class com.kakao.sdk.**.model.* { <fields>; }
 -keep class * extends com.google.gson.TypeAdapter
 
+# 구글 로그인 제외
+-keep class com.google.android.gms.internal.** { *; }
+
 # retrofit
 -keep class co.kr.sumai.net** { *; }
+-keep class co.kr.sumai.AccountInformation** { *; }
 
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule {

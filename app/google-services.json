@@ -38,6 +38,14 @@
           }
         },
         {
+          "client_id": "123591710916-pvi7r6ab7drubtc7rlifq86fjn7a9eli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.kr.sumai",
+            "certificate_hash": "2242aae4abf7b4c91cabf2cf9a0d199968f68a72"
+          }
+        },
+        {
           "client_id": "123591710916-qkhs9fs6sdg7meeb8avmu7u5aibq27o0.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -51,7 +59,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "123591710916-qkhs9fs6sdg7meeb8avmu7u5aibq27o0.apps.googleusercontent.com",
+              "client_id": "123591710916-purangqg40bqf4qnu2hfhish53nvn9rd.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

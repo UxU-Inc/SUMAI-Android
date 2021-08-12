@@ -153,8 +153,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        Log.e("account", ""+account)
+        Log.e("account.idToken", ""+account.idToken)
+        Log.e("credential", ""+credential)
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
+                    Log.e("task", ""+task)
+                    Log.e("task.isSuccessful", ""+task.isSuccessful)
+                    Log.e("task.exception", ""+task.exception)
                     if (task.isSuccessful) {
                         // 로그인 성공, 로그인한 사용자 정보로 UI 업데이트
                         val user = firebaseAuth.currentUser
