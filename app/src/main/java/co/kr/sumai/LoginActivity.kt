@@ -191,7 +191,9 @@ class LoginActivity : AppCompatActivity() {
             try {
                 // Google 로그인 성공, Firebase로 인증
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account)
+                if (account != null) {
+                    firebaseAuthWithGoogle(account)
+                }
             } catch (e: ApiException) {
                 // Google 로그인에 실패, UI를 적절하게 업데이트
                 Toast.makeText(applicationContext, "구글 로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
