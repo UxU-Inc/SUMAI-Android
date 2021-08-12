@@ -55,7 +55,7 @@ class WebViewFragment : Fragment {
             mWebSettings.cacheMode = WebSettings.LOAD_NO_CACHE // 브라우저 캐시 허용 여부
             mWebSettings.domStorageEnabled = true // 로컬저장소 허용 여부
             mWebView.isVerticalScrollBarEnabled = false
-            mWebView.loadUrl(url) //웹뷰 실행
+            mWebView.loadUrl(url!!) //웹뷰 실행
             mWebView.webChromeClient = WebChromeClient() //웹뷰에 크롬 사용 허용//이 부분이 없으면 크롬에서 alert가 뜨지 않음
             mWebView.webViewClient = WebViewClientClass() //새창열기 없이 웹뷰 내에서 다시 열기//페이지 이동 원활히 하기위해 사용
         }
