@@ -29,7 +29,7 @@
 -printconfiguration full-r8-config.txt
 
 # 네이버 sdk 제외
--keep public class com.nhn.android.naverlogin.** {
+-keep public class com.nhn.android.naverlogin** {
        public protected *;
 }
 
@@ -38,7 +38,7 @@
 -keep class * extends com.google.gson.TypeAdapter
 
 # retrofit
--keep class co.kr.sumai.net.** { *; }
+-keep class co.kr.sumai.net** { *; }
 
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule {

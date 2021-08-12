@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var ID: String = ""
     private val record = 1
     private var summaryRequestCount = 0
+    private var summaryRequestFirst = true
     private var accountInformation: AccountInformation? = null
 
     //뒤로 버튼 두번 연속 클릭 시 종료
@@ -287,7 +288,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun summaryRequest(data: String) {
         layoutLoading.setVisibility(View.VISIBLE)
         layoutLoading.setClickable(true)
-        if (mInterstitialAd != null && 4 <= summaryRequestCount) {
+        if (mInterstitialAd != null && (summaryRequestFirst || 4 <= summaryRequestCount)) {
             mInterstitialAd!!.show(this)
         }
         loadInterstitial()
@@ -298,6 +299,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 textViewSummaryResult.setVisibility(View.VISIBLE)
                 layoutLoading.setVisibility(View.INVISIBLE)
                 layoutLoading.setClickable(false)
+                summaryRequestFirst = false
                 summaryRequestCount++
             }
 
