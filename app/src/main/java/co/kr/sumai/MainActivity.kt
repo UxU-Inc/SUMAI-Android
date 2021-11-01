@@ -8,9 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Display
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -19,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import co.kr.sumai.func.AdmobSettings
 import co.kr.sumai.func.deletePreferences
 import co.kr.sumai.func.loadPreferences
 import co.kr.sumai.net.SummaryRequest
@@ -27,10 +26,6 @@ import co.kr.sumai.net.service
 import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.initialization.InitializationStatus
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.ktx.auth
@@ -48,10 +43,7 @@ import java.security.MessageDigest
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
     var drawerToggle: ActionBarDrawerToggle? = null
     var toolbar: Toolbar? = null
-    private var mInterstitialAd // 애드몹 전면 광고
-            : InterstitialAd? = null
-    private var adMobBannerID: String? = null
-    private var adMobInterstitialID: String? = null
+    lateinit var admob: AdmobSettings
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
     var ID: String = ""
     private val record = 1
@@ -105,7 +97,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         // AdMob
-        AdmobInit()
+        admob = AdmobSettings(this)
+        admob.loadBanner(ad_view_container)
     }
 
     private fun initLayout() {
@@ -212,20 +205,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun clickEvent() {
         // toolbar
-        val buttonNews: ImageButton = findViewById<ImageButton>(R.id.buttonNews)
-        buttonNews.setOnClickListener(View.OnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://news.sumai.co.kr"))
+        val buttonApps: ImageButton = findViewById(R.id.buttonApps)
+        buttonApps.setOnClickListener {
+            val intent = Intent(this, ServiceListActivity::class.java)
+            intent.putExtra("caller", localClassName)
             startActivity(intent)
-        })
+        }
 
-        layoutLogin = findViewById<LinearLayout>(R.id.layoutLogin)
+        layoutLogin = findViewById(R.id.layoutLogin)
         layoutLogin.visibility = View.GONE
-        layoutLogin.setOnClickListener(View.OnClickListener {
+        layoutLogin.setOnClickListener{
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
-        })
+        }
 
-        layoutAccount = findViewById<FrameLayout>(R.id.layoutAccount)
+        layoutAccount = findViewById(R.id.layoutAccount)
         layoutAccount.visibility = View.GONE
         layoutAccount.setOnClickListener {
             val popup = PopupMenu(this, layoutAccount)
@@ -288,10 +282,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun summaryRequest(data: String) {
         layoutLoading.setVisibility(View.VISIBLE)
         layoutLoading.setClickable(true)
-        if (mInterstitialAd != null && (summaryRequestFirst || 4 <= summaryRequestCount)) {
-            mInterstitialAd!!.show(this)
+        if (admob.mInterstitialAd != null && (summaryRequestFirst || 4 <= summaryRequestCount)) {
+            admob.mInterstitialAd!!.show(this)
         }
-        loadInterstitial()
+        admob.loadInterstitial { summaryRequestCount = 0 }
         val res: Call<SummaryResponse> = service.getSummary(SummaryRequest(data, ID, record))
         res.enqueue(object : Callback<SummaryResponse> {
             override fun onResponse(call: Call<SummaryResponse>, response: Response<SummaryResponse>) {
@@ -307,73 +301,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(getApplicationContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                 layoutLoading.setVisibility(View.INVISIBLE)
                 layoutLoading.setClickable(false)
-            }
-        })
-    }
-
-    private fun AdmobInit() {
-        if (BuildConfig.DEBUG) {
-            adMobBannerID = getString(R.string.adaptive_banner_ad_unit_id_test)
-            adMobInterstitialID = getString(R.string.adaptive_interstitial_ad_unit_id_test)
-        } else {
-            adMobBannerID = getString(R.string.adaptive_banner_ad_unit_id)
-            adMobInterstitialID = getString(R.string.adaptive_interstitial_ad_unit_id)
-        }
-        MobileAds.initialize(this, object : OnInitializationCompleteListener {
-            override fun onInitializationComplete(initializationStatus: InitializationStatus) {}
-        })
-
-
-        //┌────────────────────────────── 배너 광고 ──────────────────────────────┐
-        val adView = AdView(this)
-        adView.setAdUnitId(adMobBannerID)
-        ad_view_container.addView(adView)
-        val adRequest = AdRequest.Builder().build()
-        val adSize = adSize
-        adView.setAdSize(adSize)
-        adView.loadAd(adRequest)
-
-        //┌────────────────────────────── 전면 광고 ──────────────────────────────┐
-        loadInterstitial()
-    }
-
-    private val adSize: AdSize
-        private get() {
-            val display: Display = getWindowManager().getDefaultDisplay()
-            val outMetrics = DisplayMetrics()
-            display.getMetrics(outMetrics)
-            val widthPixels: Float = outMetrics.widthPixels.toFloat()
-            val density: Float = outMetrics.density
-            val adWidth = (widthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
-
-    private fun loadInterstitial() {
-        val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(this, adMobInterstitialID!!, adRequest, object : InterstitialAdLoadCallback() {
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                // 광고 로딩
-                mInterstitialAd = interstitialAd
-                mInterstitialAd!!.setFullScreenContentCallback(object : FullScreenContentCallback() {
-                    override fun onAdDismissedFullScreenContent() {
-                        // 전면 광고가 닫힐 때 호출
-                    }
-
-                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                        // 전면 광고가 나오지 않았올 때 호출
-                    }
-
-                    override fun onAdShowedFullScreenContent() {
-                        // 전면 광고가 나왔올 때 호출
-                        mInterstitialAd = null
-                        summaryRequestCount = 0
-                    }
-                })
-            }
-
-            override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                // 오류 처리
-                mInterstitialAd = null
             }
         })
     }
