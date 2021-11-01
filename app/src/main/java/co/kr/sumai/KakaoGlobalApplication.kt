@@ -9,6 +9,6 @@ class KakaoGlobalApplication : Application() {
         // 다른 초기화 코드들
 
         // Kakao SDK 초기화
-        KakaoSdk.init(this, "afe8ceccaf28e3cdb8e388a500246c61")
+        KakaoSdk.init(this, getString(R.string.kakao_app_key))
     }
 }

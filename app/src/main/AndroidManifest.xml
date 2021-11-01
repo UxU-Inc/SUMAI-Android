@@ -33,7 +33,7 @@
         <!-- 애드몹 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4995049534759533~1659448878" />
+            android:value="@string/admob_app_id" />
 
         <!-- 카카오 -->
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
@@ -43,7 +43,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="oauth"
-                    android:scheme="afe8ceccaf28e3cdb8e388a500246c61" />
+                    android:scheme="@string/kakao_app_key" />
             </intent-filter>
         </activity>
 
