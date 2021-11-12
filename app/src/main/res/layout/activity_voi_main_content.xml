@@ -7,9 +7,14 @@
     android:background="@color/colorBackground"
     tools:context=".voi.VoiMainActivity">
 
-    <include
+    <co.kr.sumai.CustomToolbar
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_main"/>
+        app:serviceColor="@color/colorVoiPrimary"
+        app:logoSrc="@drawable/voi_logo_white"
+        app:logoText="보이스"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
 
     <ScrollView
         android:layout_width="match_parent"

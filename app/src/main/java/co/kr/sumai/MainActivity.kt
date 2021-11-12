@@ -3,53 +3,39 @@ package co.kr.sumai
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import co.kr.sumai.func.AdmobSettings
-import co.kr.sumai.func.deletePreferences
 import co.kr.sumai.func.loadPreferences
 import co.kr.sumai.net.SummaryRequest
 import co.kr.sumai.net.SummaryResponse
 import co.kr.sumai.net.service
-import com.bumptech.glide.Glide
-import com.facebook.login.LoginManager
 import com.google.android.gms.ads.*
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.kakao.sdk.user.UserApiClient
-import com.nhn.android.naverlogin.OAuthLogin
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_content.*
 import kotlinx.android.synthetic.main.toolbar_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.MessageDigest
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     var drawerToggle: ActionBarDrawerToggle? = null
-    var toolbar: Toolbar? = null
+    private lateinit var toolbar: CustomToolbar
     lateinit var admob: AdmobSettings
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
     var ID: String = ""
     private val record = 1
     private var summaryRequestCount = 0
     private var summaryRequestFirst = true
-    private var accountInformation: AccountInformation? = null
 
     //뒤로 버튼 두번 연속 클릭 시 종료
     private var time: Long = 0
@@ -71,27 +57,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initLayout()
-        clickEvent()
 
         ID = loadPreferences(applicationContext, "loginData", "id")
-        if (ID.isNotEmpty()) {
-            service.loadAccount(ID).enqueue(object : Callback<AccountInformation> {
-                override fun onResponse(call: Call<AccountInformation>, response: Response<AccountInformation>) {
-                    if (response.isSuccessful) {
-                        accountInformation = response.body()
-
-                        setAvatar()
-                    }
-                }
-
-                override fun onFailure(call: Call<AccountInformation>, t: Throwable) {
-                    Toast.makeText(applicationContext, "로그인 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                    layoutLogin.visibility = View.VISIBLE
-                }
-            })
-        } else {
-            layoutLogin.visibility = View.VISIBLE
-        }
+        toolbar.init(ID)
 
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -103,10 +71,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun initLayout() {
         // toolbar, drawer, navigation Component
-        toolbar = findViewById<View>(R.id.toolbar) as Toolbar?
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setTitle("")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
         drawerToggle = ActionBarDrawerToggle(
                 this,
                 dl_main_drawer_root,
@@ -200,85 +169,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return false
     }
 
-    lateinit var layoutLogin: LinearLayout
-    lateinit var layoutAccount: FrameLayout
-
-    private fun clickEvent() {
-        // toolbar
-        val buttonApps: ImageButton = findViewById(R.id.buttonApps)
-        buttonApps.setOnClickListener {
-            val intent = Intent(this, ServiceListActivity::class.java)
-            intent.putExtra("caller", localClassName)
-            startActivity(intent)
-        }
-
-        layoutLogin = findViewById(R.id.layoutLogin)
-        layoutLogin.visibility = View.GONE
-        layoutLogin.setOnClickListener{
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
-        }
-
-        layoutAccount = findViewById(R.id.layoutAccount)
-        layoutAccount.visibility = View.GONE
-        layoutAccount.setOnClickListener {
-            val popup = PopupMenu(this, layoutAccount)
-            popup.setOnMenuItemClickListener(this@MainActivity)
-            popup.menuInflater.inflate(R.menu.account_menu, popup.menu)
-            popup.show()
-        }
-    }
-
-    private fun setAvatar() {
-        layoutAccount.visibility = View.VISIBLE
-
-        if (accountInformation!!.image.isNotEmpty()) {  // 프로필 이미지 있으면
-            Glide.with(this)
-                    .load(accountInformation!!.image)
-                    .circleCrop()
-                    .into(imageViewAccount)
-        } else {  // 프로필 이미지 없으면
-            val drawable = ContextCompat.getDrawable(this, R.drawable.circle) as GradientDrawable?
-            drawable!!.setColor(Color.parseColor("#" + ID.toMD5().substring(1, 7)))
-            imageViewAccount.setImageDrawable(drawable)
-
-            Glide.with(this)
-                    .load(drawable)
-                    .circleCrop()
-                    .into(imageViewAccount)
-
-            textViewName.text = reName(accountInformation!!.name)
-        }
-    }
-
-    fun String.toMD5(): String {
-        val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
-        return bytes.toHex()
-    }
-    fun ByteArray.toHex(): String {
-        return joinToString("") { "%02x".format(it) }
-    }
-
-    fun reName(name: String): String {
-        var reName: String = ""
-
-        val pattern = Regex(pattern = "[a-zA-Z0-9]")
-
-        if(pattern.matches(name.first().toString())) {
-            reName = name.first().toString()
-        } else if(3 <= name.length) {
-            if(pattern.matches(name.substring(name.length - 2, name.length))) {
-                reName = name.first().toString()
-            } else {
-                reName = name.substring(name.length - 2, name.length)
-            }
-        } else {
-            reName = name
-        }
-
-        return reName
-    }
-
     private fun summaryRequest(data: String) {
         layoutLoading.setVisibility(View.VISIBLE)
         layoutLoading.setClickable(true)
@@ -320,33 +210,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(Intent.createChooser(emailIntent, "의견 보내기"))
         }
     }
-
-    override fun onMenuItemClick(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.accountManage -> {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sumai.co.kr/login?url=https://sumai.co.kr/accounts")))
-                true
-            }
-            R.id.logout -> {
-                val SNSType = accountInformation?.type
-                val mOAuthLoginModule = OAuthLogin.getInstance()
-                mOAuthLoginModule.init(this, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), getString(R.string.app_name))
-                when (SNSType) {
-                    "GOOGLE" -> Firebase.auth.signOut()
-                    "KAKAO" -> UserApiClient.instance.logout {}
-                    "NAVER" -> mOAuthLoginModule.logout(this);
-                    "FACEBOOK" -> LoginManager.getInstance().logOut()
-                }
-                accountInformation = null
-                deletePreferences(applicationContext, "loginData", "id")
-                finish()
-                overridePendingTransition(0, 0);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                true
-            }
-            else -> false
-        }
-    }
-
 }

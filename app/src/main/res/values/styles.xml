@@ -10,6 +10,26 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppVoiTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorVoiPrimary</item>
+        <item name="colorPrimaryDark">@color/colorVoiPrimaryDark</item>
+        <item name="colorAccent">@color/colorVoiAccent</item>
+
+        <!-- No Title Bar-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppCaiiTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorCaiiPrimary</item>
+        <item name="colorPrimaryDark">@color/colorCaiiPrimaryDark</item>
+        <item name="colorAccent">@color/colorCaiiAccent</item>
+
+        <!-- No Title Bar-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
 

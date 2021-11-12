@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@color/colorPrimary">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonMenu"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMenu">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imageSUMAILogo"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="28.2dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/sumai_logo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,8 +43,8 @@
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintLeft_toRightOf="@id/textViewLogo"
-            app:layout_constraintRight_toLeftOf="@id/account"
+            app:layout_constraintStart_toEndOf="@id/textViewLogo"
+            app:layout_constraintEnd_toStartOf="@id/account"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_apps_24"
             tools:targetApi="m" />
@@ -78,6 +73,7 @@
                 tools:targetApi="m">
 
                 <ImageView
+                    android:id="@+id/loginIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -85,6 +81,7 @@
                     app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
                 <TextView
+                    android:id="@+id/loginText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -136,4 +133,4 @@
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.appcompat.widget.Toolbar>
+</merge>

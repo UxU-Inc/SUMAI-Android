@@ -7,9 +7,14 @@
     android:background="@color/colorBackground"
     tools:context=".MainActivity">
 
-    <include
+    <co.kr.sumai.CustomToolbar
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_main"/>
+        app:serviceColor="@color/colorPrimary"
+        app:logoSrc="@drawable/sumai_logo"
+        app:logoText="요약"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
 
     <ScrollView
         android:layout_width="match_parent"

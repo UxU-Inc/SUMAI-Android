@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="CustomToolbar">
+        <attr name="serviceColor" format="integer" />
+        <attr name="logoSrc" format="integer" />
+        <attr name="logoText" format="string" />
+    </declare-styleable>
+</resources>
