@@ -39,7 +39,7 @@
             app:layout_constraintStart_toEndOf="@+id/imageSUMAILogo" />
 
         <ImageButton
-            android:id="@+id/buttonNews"
+            android:id="@+id/buttonApps"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="15dp"
@@ -51,7 +51,7 @@
             app:layout_constraintLeft_toRightOf="@id/textViewLogo"
             app:layout_constraintRight_toLeftOf="@id/account"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_featured_play_list_24"
+            app:srcCompat="@drawable/ic_baseline_apps_24"
             tools:targetApi="m" />
 
 
