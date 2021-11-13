@@ -1,6 +1,5 @@
 package co.kr.sumai
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -18,7 +17,6 @@ import co.kr.sumai.net.SummaryRequest
 import co.kr.sumai.net.SummaryResponse
 import co.kr.sumai.net.service
 import com.google.android.gms.ads.*
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_content.*
@@ -27,7 +25,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
     var drawerToggle: ActionBarDrawerToggle? = null
     private lateinit var toolbar: CustomToolbar
     lateinit var admob: AdmobSettings
@@ -84,7 +82,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.string.drawer_close
         )
         dl_main_drawer_root.addDrawerListener(drawerToggle!!)
-        nv_main_navigation_root.setNavigationItemSelectedListener(this)
+        nv_main_navigation_root.init(dl_main_drawer_root)
 
 
         // main Component
@@ -143,32 +141,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else super.onOptionsItemSelected(item)
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val intent: Intent
-        when (item.itemId) {
-            R.id.home -> {
-            }
-            R.id.terms -> {
-                intent = Intent(getApplicationContext(), GuideActivity::class.java)
-                intent.putExtra("page", 0)
-                startActivity(intent)
-            }
-            R.id.privacy -> {
-                intent = Intent(getApplicationContext(), GuideActivity::class.java)
-                intent.putExtra("page", 1)
-                startActivity(intent)
-            }
-            R.id.notice -> {
-                intent = Intent(getApplicationContext(), GuideActivity::class.java)
-                intent.putExtra("page", 2)
-                startActivity(intent)
-            }
-            R.id.sendFeedback -> sendMail()
-        }
-        dl_main_drawer_root.closeDrawer(GravityCompat.START)
-        return false
-    }
-
     private fun summaryRequest(data: String) {
         layoutLoading.setVisibility(View.VISIBLE)
         layoutLoading.setClickable(true)
@@ -193,21 +165,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 layoutLoading.setClickable(false)
             }
         })
-    }
-
-    private fun sendMail() {
-        val emailIntent = Intent(Intent.ACTION_SEND)
-        try {
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("help@sumai.co.kr"))
-            emailIntent.setType("text/html")
-            emailIntent.setPackage("com.google.android.gm")
-            if (emailIntent.resolveActivity(getPackageManager()) != null) startActivity(emailIntent)
-            startActivity(emailIntent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emailIntent.setType("text/html")
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("help@sumai.co.kr"))
-            startActivity(Intent.createChooser(emailIntent, "의견 보내기"))
-        }
     }
 }

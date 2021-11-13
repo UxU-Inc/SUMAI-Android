@@ -34,8 +34,7 @@ class CustomToolbar @JvmOverloads constructor(
 ) : Toolbar(context, attrs), PopupMenu.OnMenuItemClickListener {
 
     private var accountInformation: AccountInformation? = null
-    private var binding: ToolbarMainBinding =
-        ToolbarMainBinding.inflate(LayoutInflater.from(context),this)
+    private var binding = ToolbarMainBinding.inflate(LayoutInflater.from(context),this)
 
     init{
         attrs?.let { getAttrs(it) }
@@ -63,7 +62,7 @@ class CustomToolbar @JvmOverloads constructor(
 
         binding.buttonApps.setOnClickListener {
             val intent = Intent(context, ServiceListActivity::class.java)
-            intent.putExtra("caller", context.javaClass.name.split('.').last())
+            intent.putExtra("caller", context.javaClass.simpleName)
             context.startActivity(intent)
         }
 
@@ -71,6 +70,7 @@ class CustomToolbar @JvmOverloads constructor(
             visibility = View.GONE
             setOnClickListener{
                 val intent = Intent(context, LoginActivity::class.java)
+                intent.putExtra("caller", context.javaClass.simpleName)
                 context.startActivity(intent)
             }
         }
@@ -160,7 +160,8 @@ class CustomToolbar @JvmOverloads constructor(
     override fun onMenuItemClick(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.accountManage -> {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sumai.co.kr/login?url=https://sumai.co.kr/accounts")))
+                context.startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.sumai.co.kr/accounts?url=${getUrl(context.javaClass.simpleName)}")))
                 true
             }
             R.id.logout -> {
@@ -185,6 +186,14 @@ class CustomToolbar @JvmOverloads constructor(
                 true
             }
             else -> false
+        }
+    }
+
+    private fun getUrl(className: String): String {
+        return when(className) {
+            "VoiMainActivity" -> context.getString(R.string.voi_url)
+            "CaiiMainActivity" -> context.getString(R.string.caii_url)
+            else -> context.getString(R.string.sumai_url)
         }
     }
 }

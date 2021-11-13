@@ -1,5 +1,7 @@
 package co.kr.sumai.voi
 
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -10,17 +12,15 @@ import androidx.core.view.GravityCompat
 import co.kr.sumai.R
 import co.kr.sumai.databinding.ActivityVoiMainBinding
 import co.kr.sumai.func.loadPreferences
-import com.google.android.material.navigation.NavigationView
 
-class VoiMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class VoiMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVoiMainBinding
-    private var drawerToggle: ActionBarDrawerToggle? = null
+    private lateinit var drawerToggle: ActionBarDrawerToggle
 
     private var userID: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppVoiTheme)
         super.onCreate(savedInstanceState)
         binding = ActivityVoiMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -44,8 +44,8 @@ class VoiMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
             R.string.drawer_open,
             R.string.drawer_close
         )
-        binding.dlMainDrawerRoot.addDrawerListener(drawerToggle!!)
-        binding.nvMainNavigationRoot.setNavigationItemSelectedListener(this)
+        binding.dlMainDrawerRoot.addDrawerListener(drawerToggle)
+        binding.nvMainNavigationRoot.init(binding.dlMainDrawerRoot)
 
         binding.content.textViewLimitGuide.visibility = View.INVISIBLE
         binding.content.layoutLoading.visibility = View.INVISIBLE
@@ -66,29 +66,20 @@ class VoiMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        val intent: Intent
-//        when (item.itemId) {
-//            R.id.home -> {
-//            }
-//            R.id.terms -> {
-//                intent = Intent(getApplicationContext(), GuideActivity::class.java)
-//                intent.putExtra("page", 0)
-//                startActivity(intent)
-//            }
-//            R.id.privacy -> {
-//                intent = Intent(getApplicationContext(), GuideActivity::class.java)
-//                intent.putExtra("page", 1)
-//                startActivity(intent)
-//            }
-//            R.id.notice -> {
-//                intent = Intent(getApplicationContext(), GuideActivity::class.java)
-//                intent.putExtra("page", 2)
-//                startActivity(intent)
-//            }
-//            R.id.sendFeedback -> sendMail()
-//        }
-//        dl_main_drawer_root.closeDrawer(GravityCompat.START)
-        return false
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        drawerToggle.syncState()
+        drawerToggle.drawerArrowDrawable.color = Color.WHITE
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        drawerToggle.onConfigurationChanged(newConfig)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (drawerToggle.onOptionsItemSelected(item)) {
+            true
+        } else super.onOptionsItemSelected(item)
     }
 }

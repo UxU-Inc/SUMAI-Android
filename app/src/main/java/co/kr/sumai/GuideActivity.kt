@@ -17,6 +17,9 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 class GuideActivity : AppCompatActivity() {
     private val urls = arrayOf("https://www.sumai.co.kr/terms/content", "https://www.sumai.co.kr/privacy/content", "https://www.sumai.co.kr/notices/content")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val theme = intent.getIntExtra("theme", R.style.AppVoiTheme)
+        setTheme(theme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_guide)
         termsButton.tag = 0

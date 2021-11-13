@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import co.kr.sumai.func.savePreferences
 import co.kr.sumai.net.*
+import co.kr.sumai.voi.VoiMainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -46,6 +47,8 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var mOAuthLoginModule: OAuthLogin
     private lateinit var mContext: Context
+
+    private lateinit var caller: String
 
     override fun onStart() {
         super.onStart()
@@ -319,14 +322,28 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun refreshActivity() {
-        intent = Intent(applicationContext, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
+        when(caller) {
+            "VoiMainActivity" -> {
+                val intent = Intent(applicationContext, VoiMainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+            "CaiiMainActivity" -> {
+
+            }
+            else -> {
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        caller = intent.getStringExtra("caller")!!
 
         initTag()
     }

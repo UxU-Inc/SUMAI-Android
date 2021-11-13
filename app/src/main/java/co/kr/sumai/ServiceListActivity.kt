@@ -35,7 +35,7 @@ class ServiceListActivity : AppCompatActivity() {
             }
         }
         binding.sumaiNewsBtn.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://news.sumai.co.kr"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.news_url)))
             startActivity(intent)
             finish()
         }

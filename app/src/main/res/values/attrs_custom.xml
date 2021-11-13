@@ -4,4 +4,8 @@
         <attr name="logoSrc" format="integer" />
         <attr name="logoText" format="string" />
     </declare-styleable>
+    <declare-styleable name="CustomNavigationView">
+        <attr name="navLogoSrc" format="integer" />
+        <attr name="navLogoText" format="string" />
+    </declare-styleable>
 </resources>
