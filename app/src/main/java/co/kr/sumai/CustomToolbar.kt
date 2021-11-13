@@ -15,6 +15,7 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import co.kr.sumai.databinding.ToolbarMainBinding
+import co.kr.sumai.func.AvatarSettings
 import co.kr.sumai.func.deletePreferences
 import co.kr.sumai.net.service
 import com.bumptech.glide.Glide
@@ -27,7 +28,6 @@ import kotlinx.android.synthetic.main.toolbar_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.MessageDigest
 
 class CustomToolbar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -35,6 +35,8 @@ class CustomToolbar @JvmOverloads constructor(
 
     private var accountInformation: AccountInformation? = null
     private var binding = ToolbarMainBinding.inflate(LayoutInflater.from(context),this)
+
+    private val avatar = AvatarSettings()
 
     init{
         attrs?.let { getAttrs(it) }
@@ -119,42 +121,15 @@ class CustomToolbar @JvmOverloads constructor(
                 .into(binding.imageViewAccount)
         } else {  // 프로필 이미지 없으면
             val drawable = ContextCompat.getDrawable(context, R.drawable.circle) as GradientDrawable?
-            drawable!!.setColor(Color.parseColor("#" + id.toMD5().substring(1, 7)))
-            binding.imageViewAccount.setImageDrawable(drawable)
+            drawable!!.setColor(Color.parseColor("#" + avatar.toMD5(id).substring(1, 7)))
 
             Glide.with(this)
                 .load(drawable)
                 .circleCrop()
                 .into(binding.imageViewAccount)
 
-            binding.textViewName.text = reName(accountInformation!!.name)
+            binding.textViewName.text = avatar.reName(accountInformation!!.name)
         }
-    }
-
-    private fun String.toMD5(): String {
-        val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
-        return bytes.toHex()
-    }
-    private fun ByteArray.toHex(): String {
-        return joinToString("") { "%02x".format(it) }
-    }
-
-    private fun reName(name: String): String {
-        val pattern = Regex(pattern = "[a-zA-Z0-9]")
-
-        val reName = if(pattern.matches(name.first().toString())) {
-            name.first().toString()
-        } else if(3 <= name.length) {
-            if(pattern.matches(name.substring(name.length - 2, name.length))) {
-                name.first().toString()
-            } else {
-                name.substring(name.length - 2, name.length)
-            }
-        } else {
-            name
-        }
-
-        return reName
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {

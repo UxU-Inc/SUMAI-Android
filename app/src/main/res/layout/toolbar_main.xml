@@ -107,8 +107,7 @@
                     android:id="@+id/imageViewAccount"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="3dp"
-                    android:src="@drawable/circle" />
+                    android:layout_marginVertical="3dp" />
 
                 <TextView
                     android:id="@+id/textViewName"

@@ -1,6 +1,7 @@
 package co.kr.sumai.net
 
 import android.content.Context
+import co.kr.sumai.net.voi.VoiService
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
@@ -30,3 +31,4 @@ val retrofit = Retrofit.Builder()
         .build()
 
 val service = retrofit.create(SumaiService::class.java)
+val voiService = retrofit.create(VoiService::class.java)

@@ -16,8 +16,14 @@ import co.kr.sumai.R
 import co.kr.sumai.databinding.ActivityVoiMainBinding
 import co.kr.sumai.func.AdmobSettings
 import co.kr.sumai.func.loadPreferences
+import co.kr.sumai.net.voi.VoiceModel
+import co.kr.sumai.net.voi.VoiceModelList
+import co.kr.sumai.net.voiService
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_main_content.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class VoiMainActivity : AppCompatActivity() {
 
@@ -27,7 +33,9 @@ class VoiMainActivity : AppCompatActivity() {
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var admob: AdmobSettings
 
-    private var userID: String = ""
+    private var userID = ""
+    private var modelIdx = ""
+    private var modelList = mutableListOf<VoiceModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +46,8 @@ class VoiMainActivity : AppCompatActivity() {
 
         initHeader()
         initLayout()
+
+        requestModelList()
 
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -109,7 +119,24 @@ class VoiMainActivity : AppCompatActivity() {
 
             textViewLimitGuide.visibility = View.INVISIBLE
             layoutLoading.visibility = View.INVISIBLE
+
+            recyclerView.adapter = ModelRecyclerViewAdapter(applicationContext, modelList) {
+                modelIdx = it
+            }
         }
+    }
+
+    private fun requestModelList() {
+        val res: Call<VoiceModelList> = voiService.getModelList()
+        res.enqueue(object : Callback<VoiceModelList> {
+            override fun onResponse(call: Call<VoiceModelList>, response: Response<VoiceModelList>) {
+                modelList.addAll(response.body()?.model_list!!)
+                binding.content.recyclerView.adapter?.notifyDataSetChanged()
+            }
+
+            override fun onFailure(call: Call<VoiceModelList>, t: Throwable) {
+            }
+        })
     }
 
     //뒤로 버튼 두번 연속 클릭 시 종료

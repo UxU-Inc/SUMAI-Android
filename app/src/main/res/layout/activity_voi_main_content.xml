@@ -16,19 +16,171 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toTopOf="@id/ad_view_container">
+        app:layout_constraintBottom_toTopOf="@id/ad_view_container"
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:orientation="vertical" >
+            android:background="@drawable/border_top_white"
+            android:elevation="3dp">
+
+            <EditText
+                android:id="@+id/editTextVoice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="170dp"
+                android:focusable="true"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="텍스트를 입력해주세요."
+                android:maxLength="100"
+                android:padding="16dp"
+                android:textSize="22sp"
+                android:fontFamily="@font/noto_sans_kr_regular"
+                android:includeFontPadding="false"
+                app:layout_constraintBottom_toTopOf="@id/layoutTools"
+                app:layout_constraintEnd_toStartOf="@id/layoutClear"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/layoutClear"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/layoutTools">
+
+                <ImageButton
+                    android:id="@+id/btnClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@null"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_baseline_clear_24" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutTools"
+                android:background="@drawable/border_top_white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_alignParentBottom="true">
+
+                <LinearLayout
+                    android:id="@+id/btnPlay"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnDown"
+                    android:background="@drawable/voi_ripple"
+                    android:layout_margin="5dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        app:srcCompat="@drawable/ic_baseline_play_arrow_24"
+                        app:tint="@color/colorVoiPrimary" />
+                    <TextView
+                        android:text="들어보기"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:includeFontPadding="false"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorVoiPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnDown"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btnPlay"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btnCreate"
+                    android:background="@drawable/voi_ripple"
+                    android:layout_margin="5dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:rotationX="180"
+                        app:srcCompat="@drawable/ic_baseline_publish_24"
+                        app:tint="@color/colorVoiPrimary" />
+                    <TextView
+                        android:text="다운로드"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:includeFontPadding="false"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorVoiPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnCreate"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btnDown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@drawable/voi_ripple"
+                    android:layout_margin="5dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        app:srcCompat="@drawable/ic_baseline_record_voice_over_24"
+                        app:tint="@color/colorVoiPrimary" />
+                    <TextView
+                        android:text="음성 모델 제작"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:includeFontPadding="false"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorVoiPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:layout_marginTop="5dp"
+            android:elevation="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
@@ -39,167 +191,20 @@
                 android:paddingEnd="10dp"
                 android:fontFamily="@font/noto_sans_kr_medium"
                 android:includeFontPadding="false"
-                android:text="문장 입력"
+                android:text="모델 선택"
+                android:elevation="1dp"
                 android:textSize="16sp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                tools:listitem="@layout/recycler_model_item"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:background="@android:color/white"
-                android:elevation="3dp">
-
-                <EditText
-                    android:id="@+id/editTextVoice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:minHeight="170dp"
-                    android:focusable="true"
-                    android:background="@null"
-                    android:gravity="top"
-                    android:hint="텍스트를 입력해주세요."
-                    android:maxLength="100"
-                    android:padding="16dp"
-                    android:textSize="22sp"
-                    android:fontFamily="@font/noto_sans_kr_regular"
-                    android:includeFontPadding="false"
-                    app:layout_constraintBottom_toTopOf="@id/layoutTools"
-                    app:layout_constraintEnd_toStartOf="@id/layoutClear"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/layoutClear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/layoutTools">
-
-                    <ImageButton
-                        android:id="@+id/btnClear"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@null"
-                        android:padding="10dp"
-                        app:srcCompat="@drawable/ic_baseline_clear_24" />
-                </LinearLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutTools"
-                    android:background="@drawable/border_top_white"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_alignParentBottom="true">
-
-                    <LinearLayout
-                        android:id="@+id/btnPlay"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/btnDown"
-                        android:background="@drawable/voi_ripple"
-                        android:layout_margin="5dp"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            app:srcCompat="@drawable/ic_baseline_play_arrow_24"
-                            app:tint="@color/colorVoiPrimary" />
-                        <TextView
-                            android:text="들어보기"
-                            android:fontFamily="@font/noto_sans_kr_medium"
-                            android:includeFontPadding="false"
-                            android:layout_marginBottom="5dp"
-                            android:textColor="@color/colorVoiPrimary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btnDown"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/btnPlay"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/btnCreate"
-                        android:background="@drawable/voi_ripple"
-                        android:layout_margin="5dp"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:rotationX="180"
-                            app:srcCompat="@drawable/ic_baseline_publish_24"
-                            app:tint="@color/colorVoiPrimary" />
-                        <TextView
-                            android:text="다운로드"
-                            android:fontFamily="@font/noto_sans_kr_medium"
-                            android:includeFontPadding="false"
-                            android:layout_marginBottom="5dp"
-                            android:textColor="@color/colorVoiPrimary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btnCreate"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/btnDown"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:background="@drawable/voi_ripple"
-                        android:layout_margin="5dp"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            app:srcCompat="@drawable/ic_baseline_record_voice_over_24"
-                            app:tint="@color/colorVoiPrimary" />
-                        <TextView
-                            android:text="음성 모델 제작"
-                            android:fontFamily="@font/noto_sans_kr_medium"
-                            android:includeFontPadding="false"
-                            android:layout_marginBottom="5dp"
-                            android:textColor="@color/colorVoiPrimary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="리싸이클러뷰"/>
-            </LinearLayout>
-
+                android:layout_height="wrap_content" />
         </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewLimitGuide"
