@@ -15,6 +15,7 @@
         <item name="colorPrimaryDark">@color/colorVoiPrimaryDark</item>
         <item name="colorAccent">@color/colorVoiAccent</item>
 
+        <item name="colorControlHighlight">@color/colorVoiAccent</item>
         <!-- No Title Bar-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

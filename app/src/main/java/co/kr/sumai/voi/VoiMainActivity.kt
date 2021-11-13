@@ -3,12 +3,15 @@ package co.kr.sumai.voi
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import co.kr.sumai.R
 import co.kr.sumai.databinding.ActivityVoiMainBinding
 import co.kr.sumai.func.AdmobSettings
@@ -31,10 +34,10 @@ class VoiMainActivity : AppCompatActivity() {
         binding = ActivityVoiMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initLayout()
-
         userID = loadPreferences(applicationContext, "loginData", "id")
-        binding.content.toolbar.init(userID)
+
+        initHeader()
+        initLayout()
 
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -44,12 +47,15 @@ class VoiMainActivity : AppCompatActivity() {
         admob.loadBanner(ad_view_container)
     }
 
-    private fun initLayout() {
+    private fun initHeader() {
         // toolbar, drawer, navigation Component
         setSupportActionBar(binding.content.toolbar)
+        binding.content.toolbar.init(userID)
+
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)
+
         drawerToggle = ActionBarDrawerToggle(
             this,
             binding.dlMainDrawerRoot,
@@ -58,10 +64,52 @@ class VoiMainActivity : AppCompatActivity() {
             R.string.drawer_close
         )
         binding.dlMainDrawerRoot.addDrawerListener(drawerToggle)
+
         binding.nvMainNavigationRoot.init(binding.dlMainDrawerRoot)
 
-        binding.content.textViewLimitGuide.visibility = View.INVISIBLE
-        binding.content.layoutLoading.visibility = View.INVISIBLE
+    }
+
+    private fun initLayout() {
+        with(binding.content) {
+            btnClear.visibility = View.INVISIBLE
+            btnClear.setOnClickListener {
+                editTextVoice.setText("")
+                btnClear.visibility = View.INVISIBLE
+                if (textViewLimitGuide.isVisible)
+                    textViewLimitGuide.visibility = View.INVISIBLE
+            }
+
+            btnPlay.setOnClickListener {  }
+            btnDown.setOnClickListener {  }
+            btnCreate.setOnClickListener {  }
+
+            editTextVoice.addTextChangedListener(object : TextWatcher {
+                // 입력 변화 시
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    if (editTextVoice.text.isNotEmpty()) {
+                        if (!btnClear.isVisible)
+                            btnClear.visibility = View.VISIBLE
+
+                        if (100 <= editTextVoice.text.length)
+                            textViewLimitGuide.visibility = View.VISIBLE
+                        else if (textViewLimitGuide.isVisible)
+                            textViewLimitGuide.visibility = View.INVISIBLE
+                    } else {
+                        if (btnClear.isVisible)
+                            btnClear.visibility = View.INVISIBLE
+                    }
+                }
+
+                // 입력 끝났을 때
+                override fun afterTextChanged(arg0: Editable) { }
+
+                // 입력하기 전
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { }
+            })
+
+            textViewLimitGuide.visibility = View.INVISIBLE
+            layoutLoading.visibility = View.INVISIBLE
+        }
     }
 
     //뒤로 버튼 두번 연속 클릭 시 종료
