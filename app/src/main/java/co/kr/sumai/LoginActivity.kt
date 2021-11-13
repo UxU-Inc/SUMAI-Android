@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import co.kr.sumai.caii.CaiiMainActivity
 import co.kr.sumai.func.savePreferences
 import co.kr.sumai.net.*
 import co.kr.sumai.voi.VoiMainActivity
@@ -329,7 +330,9 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             "CaiiMainActivity" -> {
-
+                val intent = Intent(applicationContext, CaiiMainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
             else -> {
                 val intent = Intent(applicationContext, MainActivity::class.java)

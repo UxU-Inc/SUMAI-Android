@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import co.kr.sumai.caii.CaiiMainActivity
 import co.kr.sumai.databinding.ActivityServiceListBinding
 import co.kr.sumai.func.AdmobSettings
 import co.kr.sumai.voi.VoiMainActivity
@@ -48,7 +49,12 @@ class ServiceListActivity : AppCompatActivity() {
             }
         }
         binding.caiiBtn.setOnClickListener {
-
+            if(caller == "CaiiMainActivity") finish()
+            else {
+                val intent = Intent(this, CaiiMainActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
+            }
         }
     }
 }
