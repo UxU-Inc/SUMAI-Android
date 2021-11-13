@@ -11,12 +11,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import co.kr.sumai.R
 import co.kr.sumai.databinding.ActivityVoiMainBinding
+import co.kr.sumai.func.AdmobSettings
 import co.kr.sumai.func.loadPreferences
+import com.google.firebase.analytics.FirebaseAnalytics
+import kotlinx.android.synthetic.main.activity_main_content.*
 
 class VoiMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVoiMainBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle
+
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var admob: AdmobSettings
 
     private var userID: String = ""
 
@@ -29,6 +35,13 @@ class VoiMainActivity : AppCompatActivity() {
 
         userID = loadPreferences(applicationContext, "loginData", "id")
         binding.content.toolbar.init(userID)
+
+        // Firebase
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        // AdMob
+        admob = AdmobSettings(this)
+        admob.loadBanner(ad_view_container)
     }
 
     private fun initLayout() {

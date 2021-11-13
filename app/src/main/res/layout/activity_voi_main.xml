@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:navLogoSrc="@drawable/voi_logo_white"
+            app:navLogoSrc="@drawable/voi_logo"
             app:navLogoText="보이스"
             app:menu="@menu/main_navi" />
 

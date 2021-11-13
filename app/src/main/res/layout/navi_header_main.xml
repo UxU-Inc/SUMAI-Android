@@ -15,8 +15,9 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="28.2dp"
+            android:adjustViewBounds="true"
             android:layout_marginRight="10dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/sumai_logo_blue" />
