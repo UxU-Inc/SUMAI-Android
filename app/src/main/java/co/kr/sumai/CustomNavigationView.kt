@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import co.kr.sumai.func.InfoByClass
 import com.google.android.material.navigation.NavigationView
 
 class CustomNavigationView @JvmOverloads constructor(
@@ -17,6 +18,8 @@ class CustomNavigationView @JvmOverloads constructor(
 ) : NavigationView(context, attrs), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var dlMainDrawerRoot: DrawerLayout
+
+    private val infoByClass = InfoByClass()
 
     init{
         val header = LayoutInflater.from(context).inflate(R.layout.navi_header_main, this, false)
@@ -51,19 +54,19 @@ class CustomNavigationView @JvmOverloads constructor(
             }
             R.id.terms -> {
                 intent = Intent(context, GuideActivity::class.java)
-                intent.putExtra("theme", getTheme(context.javaClass.simpleName))
+                intent.putExtra("theme", infoByClass.getTheme(context.javaClass.simpleName))
                 intent.putExtra("page", 0)
                 context.startActivity(intent)
             }
             R.id.privacy -> {
                 intent = Intent(context, GuideActivity::class.java)
-                intent.putExtra("theme", getTheme(context.javaClass.simpleName))
+                intent.putExtra("theme", infoByClass.getTheme(context.javaClass.simpleName))
                 intent.putExtra("page", 1)
                 context.startActivity(intent)
             }
             R.id.notice -> {
                 intent = Intent(context, GuideActivity::class.java)
-                intent.putExtra("theme", getTheme(context.javaClass.simpleName))
+                intent.putExtra("theme", infoByClass.getTheme(context.javaClass.simpleName))
                 intent.putExtra("page", 2)
                 context.startActivity(intent)
             }
@@ -71,14 +74,6 @@ class CustomNavigationView @JvmOverloads constructor(
         }
         dlMainDrawerRoot.closeDrawer(GravityCompat.START)
         return false
-    }
-
-    private fun getTheme(className: String): Int {
-        return when(className) {
-            "VoiMainActivity" -> R.style.AppVoiTheme
-            "CaiiMainActivity" -> R.style.AppCaiiTheme
-            else -> R.style.AppTheme
-        }
     }
 
     private fun sendMail() {

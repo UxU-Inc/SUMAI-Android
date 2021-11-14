@@ -15,6 +15,9 @@ class ServiceListActivity : AppCompatActivity() {
     lateinit var caller: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val theme = intent.getIntExtra("theme", R.style.AppVoiTheme)
+        setTheme(theme)
+
         super.onCreate(savedInstanceState)
         binding = ActivityServiceListBinding.inflate(layoutInflater)
         setContentView(binding.root)

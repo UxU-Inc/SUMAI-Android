@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import co.kr.sumai.databinding.ToolbarMainBinding
 import co.kr.sumai.func.AvatarSettings
+import co.kr.sumai.func.InfoByClass
 import co.kr.sumai.func.deletePreferences
 import co.kr.sumai.net.service
 import com.bumptech.glide.Glide
@@ -37,6 +38,8 @@ class CustomToolbar @JvmOverloads constructor(
     private var binding = ToolbarMainBinding.inflate(LayoutInflater.from(context),this)
 
     private val avatar = AvatarSettings()
+
+    private val infoByClass = InfoByClass()
 
     init{
         attrs?.let { getAttrs(it) }
@@ -65,6 +68,7 @@ class CustomToolbar @JvmOverloads constructor(
         binding.buttonApps.setOnClickListener {
             val intent = Intent(context, ServiceListActivity::class.java)
             intent.putExtra("caller", context.javaClass.simpleName)
+            intent.putExtra("theme", infoByClass.getTheme(context.javaClass.simpleName))
             context.startActivity(intent)
         }
 
@@ -136,7 +140,7 @@ class CustomToolbar @JvmOverloads constructor(
         return when (item.itemId) {
             R.id.accountManage -> {
                 context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://www.sumai.co.kr/accounts?url=${getUrl(context.javaClass.simpleName)}")))
+                    Uri.parse("https://www.sumai.co.kr/accounts?url=${infoByClass.getUrl(context, context.javaClass.simpleName)}")))
                 true
             }
             R.id.logout -> {
@@ -161,14 +165,6 @@ class CustomToolbar @JvmOverloads constructor(
                 true
             }
             else -> false
-        }
-    }
-
-    private fun getUrl(className: String): String {
-        return when(className) {
-            "VoiMainActivity" -> context.getString(R.string.voi_url)
-            "CaiiMainActivity" -> context.getString(R.string.caii_url)
-            else -> context.getString(R.string.sumai_url)
         }
     }
 }

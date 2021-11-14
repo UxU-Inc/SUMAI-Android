@@ -15,13 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".voi.CreateModelActivity"
+            android:exported="false"
+            android:theme="@style/AppVoiTheme" />
+        <activity
             android:name=".voi.VoiMainActivity"
-            android:theme="@style/AppVoiTheme"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppVoiTheme" />
         <activity
             android:name=".caii.CaiiMainActivity"
-            android:theme="@style/AppCaiiTheme"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppCaiiTheme" />
         <activity
             android:name=".ServiceListActivity"
             android:exported="false" />

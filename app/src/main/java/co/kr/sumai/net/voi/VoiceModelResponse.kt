@@ -1,5 +1,5 @@
 package co.kr.sumai.net.voi
 
-data class VoiceModelList (
+data class VoiceModelResponse (
     val model_list: MutableList<VoiceModel>
 )
