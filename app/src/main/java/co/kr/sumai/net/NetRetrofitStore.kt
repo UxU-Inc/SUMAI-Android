@@ -20,7 +20,7 @@ val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(15, TimeUnit.SECONDS)
-//        .addInterceptor(interceptor) // Turn on if want Log
+        .addInterceptor(interceptor) // Turn off if you don't want Log
         .build()
 
 

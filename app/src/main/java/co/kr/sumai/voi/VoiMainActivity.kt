@@ -126,6 +126,7 @@ class VoiMainActivity : AppCompatActivity() {
 
             recyclerView.adapter = ModelRecyclerViewAdapter(applicationContext, modelList) {
                 modelIdx = it
+                isSamePrevious = false
             }
         }
     }
@@ -152,10 +153,10 @@ class VoiMainActivity : AppCompatActivity() {
         }
 
         // 입력 끝났을 때
-        override fun afterTextChanged(arg0: Editable) {}
+        override fun afterTextChanged(arg0: Editable) { }
 
         // 입력하기 전
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { }
     }
 
     private fun playVoice(down: Boolean = false) {
