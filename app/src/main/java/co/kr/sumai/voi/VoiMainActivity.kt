@@ -24,8 +24,8 @@ import co.kr.sumai.func.AdmobSettings
 import co.kr.sumai.func.loadPreferences
 import co.kr.sumai.net.voi.TTSRequest
 import co.kr.sumai.net.voi.TTSResponse
-import co.kr.sumai.net.voi.VoiceModel
-import co.kr.sumai.net.voi.VoiceModelResponse
+import co.kr.sumai.net.voi.AllVoiceModel
+import co.kr.sumai.net.voi.AllVoiceModelResponse
 import co.kr.sumai.net.voiService
 import com.google.firebase.analytics.FirebaseAnalytics
 import retrofit2.Call
@@ -44,7 +44,7 @@ class VoiMainActivity : AppCompatActivity() {
 
     private var userID = ""
     private var modelIdx = ""
-    private var modelList = mutableListOf<VoiceModel>()
+    private var modelList = mutableListOf<AllVoiceModel>()
 
     private var mediaPlayer: MediaPlayer? = null
     private var byteArray: ByteArray? = null
@@ -124,7 +124,7 @@ class VoiMainActivity : AppCompatActivity() {
                 }
             }
 
-            recyclerView.adapter = ModelRecyclerViewAdapter(applicationContext, modelList) {
+            recyclerView.adapter = MainModelRecyclerViewAdapter(applicationContext, modelList) {
                 modelIdx = it
                 isSamePrevious = false
             }
@@ -228,14 +228,14 @@ class VoiMainActivity : AppCompatActivity() {
     }
 
     private fun requestModelList() {
-        val res: Call<VoiceModelResponse> = voiService.getModelList()
-        res.enqueue(object : Callback<VoiceModelResponse> {
-            override fun onResponse(call: Call<VoiceModelResponse>, response: Response<VoiceModelResponse>) {
+        val res: Call<AllVoiceModelResponse> = voiService.getModelFullList()
+        res.enqueue(object : Callback<AllVoiceModelResponse> {
+            override fun onResponse(call: Call<AllVoiceModelResponse>, response: Response<AllVoiceModelResponse>) {
                 modelList.addAll(response.body()?.model_list!!)
                 binding.content.recyclerView.adapter?.notifyDataSetChanged()
             }
 
-            override fun onFailure(call: Call<VoiceModelResponse>, t: Throwable) {
+            override fun onFailure(call: Call<AllVoiceModelResponse>, t: Throwable) {
             }
         })
     }
