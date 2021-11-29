@@ -12,5 +12,11 @@ interface VoiService {
     fun requestTTS(@Body textToSpeechRequest: TTSRequest): Call<TTSResponse>
 
     @POST("/api/voi/voice_model_list")
-    fun getModelList(): Call<VoiceModelResponse>
+    fun getModelList(@Body voiceModelRequest: VoiceModelRequest): Call<VoiceModelResponse>
+
+    @POST("/api/voi/voice_model_delete")
+    fun getModelDelete(@Body modelDeleteRequest: ModelDeleteRequest): Call<ModelDeleteResponse>
+
+    @POST("/api/voi/voice_model_delete_cancel")
+    fun getModelDeleteCancel(@Body modelDeleteRequest: ModelDeleteRequest): Call<ModelDeleteResponse>
 }

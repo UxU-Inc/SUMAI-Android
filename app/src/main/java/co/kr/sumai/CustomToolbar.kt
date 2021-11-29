@@ -14,11 +14,13 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import co.kr.sumai.caii.CaiiMainActivity
 import co.kr.sumai.databinding.ToolbarMainBinding
 import co.kr.sumai.func.AvatarSettings
 import co.kr.sumai.func.InfoByClass
 import co.kr.sumai.func.deletePreferences
 import co.kr.sumai.net.service
+import co.kr.sumai.voi.VoiMainActivity
 import com.bumptech.glide.Glide
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.ktx.auth
@@ -157,11 +159,15 @@ class CustomToolbar @JvmOverloads constructor(
                 }
                 accountInformation = null
                 deletePreferences(context, "loginData", "id")
+                deletePreferences(context, "loginData", "name")
+
+                val intent = infoByClass.getIntentByLogo(context, binding.textViewLogo.text.toString())
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 val activity = context as Activity
-                activity.finish()
                 activity.overridePendingTransition(0, 0)
-                activity.startActivity(activity.intent)
+                activity.startActivity(intent)
                 activity.overridePendingTransition(0, 0)
+                activity.finishAffinity()
                 true
             }
             else -> false

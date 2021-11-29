@@ -231,11 +231,16 @@ class VoiMainActivity : AppCompatActivity() {
         val res: Call<AllVoiceModelResponse> = voiService.getModelFullList()
         res.enqueue(object : Callback<AllVoiceModelResponse> {
             override fun onResponse(call: Call<AllVoiceModelResponse>, response: Response<AllVoiceModelResponse>) {
-                modelList.addAll(response.body()?.model_list!!)
-                binding.content.recyclerView.adapter?.notifyDataSetChanged()
+                if (response.isSuccessful) {
+                    modelList.addAll(response.body()?.model_list!!)
+                    binding.content.recyclerView.adapter?.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(applicationContext, "모델 로딩 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onFailure(call: Call<AllVoiceModelResponse>, t: Throwable) {
+                Toast.makeText(applicationContext, "모델 로딩 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
     }
