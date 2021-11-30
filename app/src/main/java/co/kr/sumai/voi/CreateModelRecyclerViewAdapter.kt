@@ -91,7 +91,11 @@ class CreateModelRecyclerViewAdapter(
                     }
 
                     override fun onFinish() {
+                        binding.btnDeleteCancel.setOnClickListener(null)
+                        isLoading = true
+
                         Handler(Looper.getMainLooper()).postDelayed({
+                            isLoading = false
                             refresh()
                         }, 3000)
                     }

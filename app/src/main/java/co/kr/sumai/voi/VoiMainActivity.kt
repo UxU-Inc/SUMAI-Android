@@ -252,7 +252,7 @@ class VoiMainActivity : AppCompatActivity() {
             admob.mInterstitialAd!!.show(this)
         }
         admob.loadInterstitial { voiceRequestCount = 0 }
-        val res: Call<TTSResponse> = voiService.requestTTS(TTSRequest(modelIdx, script))
+        val res: Call<TTSResponse> = voiService.requestTTS(TTSRequest(userID, modelIdx, script))
         res.enqueue(object : Callback<TTSResponse> {
             override fun onResponse(call: Call<TTSResponse>, response: Response<TTSResponse>) {
                 if (response.isSuccessful) {
