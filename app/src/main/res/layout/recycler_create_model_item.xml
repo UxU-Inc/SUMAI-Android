@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginBottom="5dp"
+    android:paddingVertical="5dp"
+    android:focusable="true"
+    android:clickable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/modelImageLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/modelName"
+        android:layout_margin="5dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/modelImage"
+            android:background="@drawable/ic_baseline_account_circle_144"
+            android:backgroundTint="@color/colorVoiAccentWhite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/modelOwner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:autoSizeMaxTextSize="75sp"
+            android:autoSizeMinTextSize="45sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLength="3"
+            android:maxLines="1"
+            android:textColor="#FAFAFA"
+            android:textStyle="bold"
+            tools:targetApi="o"
+            tools:text="닉네임" />
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/voi_ripple_oval"
+        android:padding="5dp"
+        android:layout_marginEnd="5dp"
+        app:srcCompat="@drawable/ic_baseline_close_24"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tint="#616161" />
+
+    <TextView
+        android:id="@+id/modelName"
+        tools:text="모델"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:includeFontPadding="false"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/modelImageLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/deleteLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/voi_delete_background"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/remainTimeText"
+            android:text="삭제 예정 시간"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/remainTime"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/remainTime"
+            android:text="00일 00시 00분 00초"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/remainTimeText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnDeleteCancel"
+            android:background="@drawable/voi_ripple_rect10"
+            android:text="삭제 취소"
+            android:fontFamily="@font/noto_sans_kr_medium"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorVoiPrimary"
+            android:includeFontPadding="false"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,30 +8,25 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import co.kr.sumai.R
-import co.kr.sumai.databinding.RecyclerModelItemBinding
+import co.kr.sumai.databinding.RecyclerMainModelItemBinding
 import co.kr.sumai.func.AvatarSettings
-import co.kr.sumai.net.voi.VoiceModel
+import co.kr.sumai.net.voi.AllVoiceModel
 import com.bumptech.glide.Glide
 
-class ModelRecyclerViewAdapter(
+class MainModelRecyclerViewAdapter(
     val context: Context,
-    private val modelList: MutableList<VoiceModel>,
+    private val modelList: MutableList<AllVoiceModel>,
     private val notifyChanged: (String) -> Unit)
-    : RecyclerView.Adapter<ModelRecyclerViewAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<MainModelRecyclerViewAdapter.ViewHolder>() {
 
     private var selectedPos = RecyclerView.NO_POSITION
 
     private val avatar = AvatarSettings()
 
-    inner class ViewHolder(private val binding: RecyclerModelItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: RecyclerMainModelItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: VoiceModel) {
-            if (model.model_image.isNotEmpty()) {  // 프로필 이미지 있으면
-                Glide.with(context)
-                    .load(model.model_image)
-                    .circleCrop()
-                    .into(binding.modelImage)
-            } else {  // 프로필 이미지 없으면
+        fun bind(model: AllVoiceModel) {
+            if (model.model_image.isNullOrEmpty()) {  // 프로필 이미지 없으면
                 val drawable = ContextCompat.getDrawable(context, R.drawable.circle)?.mutate() as GradientDrawable
                 drawable.setColor(Color.parseColor("#" + avatar.toMD5(model.id).substring(1, 7)))
 
@@ -41,6 +36,11 @@ class ModelRecyclerViewAdapter(
                     .into(binding.modelImage)
 
                 binding.modelOwner.text = avatar.reName(model.user_name)
+            } else {  // 프로필 이미지 있으면
+                Glide.with(context)
+                    .load(model.model_image)
+                    .circleCrop()
+                    .into(binding.modelImage)
             }
 
             binding.modelName.text = model.model_name
@@ -55,7 +55,7 @@ class ModelRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RecyclerModelItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = RecyclerMainModelItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
     }

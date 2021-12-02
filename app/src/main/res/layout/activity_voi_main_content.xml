@@ -84,7 +84,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btnDown"
-                    android:background="@drawable/voi_ripple"
+                    android:background="@drawable/voi_ripple_rect"
                     android:layout_margin="5dp"
                     android:focusable="true"
                     android:clickable="true"
@@ -117,7 +117,7 @@
                     app:layout_constraintStart_toEndOf="@id/btnPlay"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btnCreate"
-                    android:background="@drawable/voi_ripple"
+                    android:background="@drawable/voi_ripple_rect"
                     android:layout_margin="5dp"
                     android:focusable="true"
                     android:clickable="true"
@@ -148,7 +148,7 @@
                     app:layout_constraintStart_toEndOf="@id/btnDown"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:background="@drawable/voi_ripple"
+                    android:background="@drawable/voi_ripple_rect"
                     android:layout_margin="5dp"
                     android:focusable="true"
                     android:clickable="true"
@@ -199,8 +199,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                tools:listitem="@layout/recycler_main_model_item"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
                 tools:listitem="@layout/recycler_model_item" />

@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import co.kr.sumai.caii.CaiiMainActivity
+import co.kr.sumai.func.InfoByClass
 import co.kr.sumai.func.savePreferences
 import co.kr.sumai.net.*
 import co.kr.sumai.voi.VoiMainActivity
@@ -50,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mContext: Context
 
     private lateinit var caller: String
+    private val infoByClass = InfoByClass()
 
     override fun onStart() {
         super.onStart()
@@ -83,6 +85,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     // 로그인 성공
                     savePreferences(applicationContext, "loginData", "id", response.body()?.id)
+                    savePreferences(applicationContext, "loginData", "name", response.body()?.name)
                     finish()
                 }
 
@@ -294,10 +297,12 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("test", response.body()!!.complete.toString())
                     if (response.body()!!.complete == 1) {
                         savePreferences(applicationContext, "loginData", "id", id)
+                        savePreferences(applicationContext, "loginData", "name", name)
                         Toast.makeText(applicationContext, "$finalSNSName 로그인되었습니다.", Toast.LENGTH_SHORT).show()
                         refreshActivity()
                     } else if (response.body()!!.complete == 2) {
                         savePreferences(applicationContext, "loginData", "id", id)
+                        savePreferences(applicationContext, "loginData", "name", name)
                         Toast.makeText(applicationContext, "$finalSNSName 회원 가입되었습니다.", Toast.LENGTH_SHORT).show()
                         refreshActivity()
                     } else if (response.body()!!.complete == -1) {
@@ -323,23 +328,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun refreshActivity() {
-        when(caller) {
-            "VoiMainActivity" -> {
-                val intent = Intent(applicationContext, VoiMainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-            }
-            "CaiiMainActivity" -> {
-                val intent = Intent(applicationContext, CaiiMainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-            }
-            else -> {
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-            }
-        }
+        val intent = infoByClass.getIntent(applicationContext, caller)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

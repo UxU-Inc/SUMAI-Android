@@ -18,6 +18,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".caii.CaiiCallingActivity"/>
         <activity
+            android:name=".voi.ModelSettingsActivity"
+            android:exported="false"
+            android:theme="@style/AppVoiTheme" />
+        <activity
             android:name=".voi.CreateModelActivity"
             android:exported="false"
             android:theme="@style/AppVoiTheme" />
