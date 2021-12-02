@@ -199,11 +199,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                tools:listitem="@layout/recycler_model_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                tools:listitem="@layout/recycler_model_item" />
         </LinearLayout>
 
     </LinearLayout>

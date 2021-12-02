@@ -6,4 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".caii.CaiiMainActivity">
 
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/dl_main_drawer_root"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:openDrawer="start">
+
+        <include
+            android:id="@+id/content"
+            layout="@layout/activity_caii_main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <co.kr.sumai.CustomNavigationView
+            android:id="@+id/nv_main_navigation_root"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:navLogoSrc="@drawable/caii_logo"
+            app:navLogoText="콜봇"
+            app:menu="@menu/main_navi" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
