@@ -19,4 +19,7 @@ interface VoiService {
 
     @POST("/api/voi/voice_model_delete_cancel")
     fun getModelDeleteCancel(@Body modelDeleteRequest: ModelDeleteRequest): Call<ModelDeleteResponse>
+
+    @POST("/api/voi/voice_model_load")
+    fun getModelInfo(@Body modelInfoRequest: ModelInfoRequest): Call<ModelInfoResponse>
 }

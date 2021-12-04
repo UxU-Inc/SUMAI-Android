@@ -90,10 +90,12 @@ class CreateModelActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(applicationContext, "모델 로딩 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                 }
+                binding.layoutLoading.visibility = View.INVISIBLE
             }
 
             override fun onFailure(call: Call<VoiceModelResponse>, t: Throwable) {
                 Toast.makeText(applicationContext, "모델 로딩 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                binding.layoutLoading.visibility = View.INVISIBLE
             }
         })
     }
@@ -103,7 +105,6 @@ class CreateModelActivity : AppCompatActivity() {
             modelList.add(null)
         }
         binding.recyclerView.adapter?.notifyDataSetChanged()
-        binding.layoutLoading.visibility = View.INVISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -24,8 +24,11 @@
         app:layout_constraintBottom_toTopOf="@id/ad_view_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsLayout"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:id="@+id/modelInfoLayout"
@@ -38,13 +41,39 @@
                 android:layout_marginHorizontal="60dp"
                 android:orientation="vertical">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/modelImage"
-                    android:background="@drawable/ic_baseline_account_circle_144"
-                    android:backgroundTint="@color/colorVoiAccentWhite"
+                <FrameLayout
+                    android:id="@+id/modelImageLayout"
                     android:layout_margin="10dp"
-                    android:layout_width="144dp"
-                    android:layout_height="144dp" />
+                    android:layout_width="150dp"
+                    android:layout_height="150dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/modelImage"
+                        android:background="@drawable/ic_baseline_account_circle_144"
+                        android:backgroundTint="@color/colorVoiAccentWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/modelOwner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:autoSizeMaxTextSize="75sp"
+                        android:autoSizeMinTextSize="45sp"
+                        android:autoSizeStepGranularity="2sp"
+                        android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:textColor="#FAFAFA"
+                        android:textStyle="bold"
+                        tools:targetApi="o"
+                        tools:text="닉네임" />
+                </FrameLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/modelName"
@@ -61,6 +90,10 @@
                         android:textColor="@color/colorVoiText"
                         android:textStyle="bold"
                         android:includeFontPadding="false"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxLength="10"
+                        android:imeOptions="actionDone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         />
@@ -68,8 +101,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/btnSave"
-                    android:text="저장"
+                    android:id="@+id/btnCreateNSave"
+                    android:text="생성"
                     android:fontFamily="@font/noto_sans_kr_medium"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -83,7 +116,7 @@
                     android:layout_height="wrap_content" />
 
                 <Button
-                    android:id="@+id/btnCreate"
+                    android:id="@+id/btnModelCreate"
                     android:text="음성합성 모델 생성"
                     android:fontFamily="@font/noto_sans_kr_medium"
                     android:textSize="20sp"
@@ -148,7 +181,7 @@
                     android:textColor="@color/colorVoiText"
                     android:includeFontPadding="false"
                     android:layout_weight="1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content" />
 
                 <Button
@@ -189,5 +222,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/layoutLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4D000000">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/colorVoiPrimary"
+            tools:targetApi="lollipop" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
