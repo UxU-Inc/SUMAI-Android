@@ -10,7 +10,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppVoiTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppVoiTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorVoiPrimary</item>
         <item name="colorPrimaryDark">@color/colorVoiPrimaryDark</item>
         <item name="colorAccent">@color/colorVoiAccent</item>

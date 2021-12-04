@@ -3,6 +3,7 @@ package co.kr.sumai.voi
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import co.kr.sumai.R
 import co.kr.sumai.databinding.ActivityModelSettingsBinding
 import co.kr.sumai.func.AdmobSettings
@@ -26,6 +27,7 @@ class ModelSettingsActivity : AppCompatActivity() {
         userID = loadPreferences(applicationContext, "loginData", "id")
 
         initHeader()
+        initLayout()
 
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -43,6 +45,10 @@ class ModelSettingsActivity : AppCompatActivity() {
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
+    }
+
+    private fun initLayout() {
+        binding.recyclerView.adapter = VoiceRecordRecyclerViewAdapter(this, mutableListOf("", "", ""))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

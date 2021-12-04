@@ -54,6 +54,7 @@
         android:fontFamily="@font/noto_sans_kr_medium"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/colorVoiText"
         android:includeFontPadding="false"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/modelImageLayout"
