@@ -68,6 +68,7 @@
         android:fontFamily="@font/noto_sans_kr_medium"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/colorVoiText"
         android:includeFontPadding="false"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/modelImageLayout"
@@ -117,6 +118,7 @@
 
         <Button
             android:id="@+id/btnDeleteCancel"
+            app:backgroundTint="@null"
             android:background="@drawable/voi_ripple_rect10"
             android:text="삭제 취소"
             android:fontFamily="@font/noto_sans_kr_medium"
@@ -125,7 +127,8 @@
             android:textColor="@color/colorVoiPrimary"
             android:includeFontPadding="false"
             android:layout_margin="10dp"
-            android:padding="10dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
             android:minHeight="0dp"
             android:minWidth="0dp"
             app:layout_constraintTop_toTopOf="parent"

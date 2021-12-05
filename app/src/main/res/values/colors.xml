@@ -8,6 +8,7 @@
     <color name="colorVoiPrimaryDark">#7b1fa2</color>
     <color name="colorVoiAccent">#ce93d8</color>
     <color name="colorVoiAccentWhite">#f3e5f5</color>
+    <color name="colorVoiText">#505050</color>
 
     <color name="colorCaiiPrimary">#4caf50</color>
     <color name="colorCaiiPrimaryDark">#43a047</color>

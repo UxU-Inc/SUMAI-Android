@@ -15,10 +15,228 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/ad_view_container">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsLayout"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/modelInfoLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginVertical="20dp"
+                android:layout_marginHorizontal="60dp"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/modelImageLayout"
+                    android:layout_margin="10dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/modelImage"
+                        android:background="@drawable/ic_baseline_account_circle_144"
+                        android:backgroundTint="@color/colorVoiAccentWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/modelOwner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:autoSizeMaxTextSize="75sp"
+                        android:autoSizeMinTextSize="45sp"
+                        android:autoSizeStepGranularity="2sp"
+                        android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:textColor="#FAFAFA"
+                        android:textStyle="bold"
+                        tools:targetApi="o"
+                        tools:text="닉네임" />
+                </FrameLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/modelName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:hint="음성 모델 이름(2~10글자)"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:textSize="18sp"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:textColor="@color/colorVoiText"
+                        android:textStyle="bold"
+                        android:includeFontPadding="false"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:maxLength="10"
+                        android:imeOptions="actionDone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btnCreateNSave"
+                    android:text="생성"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorVoiText"
+                    android:includeFontPadding="false"
+                    android:padding="8dp"
+                    android:layout_margin="4dp"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/voi_ripple_rect10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/btnModelCreate"
+                    android:text="음성합성 모델 생성"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorVoiText"
+                    android:includeFontPadding="false"
+                    android:padding="10dp"
+                    android:layout_margin="4dp"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/voi_ripple_rect10"
+                    app:icon="@drawable/ic_baseline_record_voice_over_24"
+                    app:iconTint="@color/colorVoiText"
+                    app:iconGravity="textStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/btnRecord"
+                    android:text="내 음성 녹음하기"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorVoiText"
+                    android:includeFontPadding="false"
+                    android:padding="10dp"
+                    android:layout_margin="4dp"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/voi_ripple_rect10"
+                    app:icon="@drawable/ic_baseline_mic_24"
+                    app:iconTint="@color/colorVoiText"
+                    app:iconGravity="textStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="10dp"
+                app:layout_constraintTop_toBottomOf="@id/modelInfoLayout"
+                app:layout_constraintBottom_toTopOf="@id/recordTextLayout"
+                android:background="@color/colorVoiPrimary"/>
+
+            <LinearLayout
+                android:id="@+id/recordTextLayout"
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                app:layout_constraintBottom_toTopOf="@id/recyclerView"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="최신 녹음 목록"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorVoiText"
+                    android:includeFontPadding="false"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:text="전체 목록 보기"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorVoiText"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_baseline_arrow_right_24"
+                    app:iconTint="@color/colorVoiText"
+                    app:iconGravity="textEnd"
+                    app:iconPadding="0dp"
+                    style="?attr/materialButtonOutlinedStyle"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recordTextLayout"
+                app:spanCount="2"
+                tools:layout_editor_absoluteX="16dp"
+                tools:listitem="@layout/recycler_voice_record_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
     <FrameLayout
         android:id="@+id/ad_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/layoutLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4D000000">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/colorVoiPrimary"
+            tools:targetApi="lollipop" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

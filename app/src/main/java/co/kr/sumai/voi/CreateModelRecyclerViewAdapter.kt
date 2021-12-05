@@ -103,6 +103,7 @@ class CreateModelRecyclerViewAdapter(
             } else { // 삭제 상태가 아니면
                 binding.root.setOnClickListener {
                     val intent = Intent(context, ModelSettingsActivity::class.java)
+                    intent.putExtra("modelIdx", model.model_idx)
                     context.startActivity(intent)
                 }
                 binding.deleteLayout.visibility = View.INVISIBLE
