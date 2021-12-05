@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast

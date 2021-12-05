@@ -63,7 +63,7 @@ class CaiiMainActivity : AppCompatActivity() {
         requestPermission()
 
         GlobalScope.launch {
-            delay(3000L)
+//            delay(3000L)
             val intent = Intent(this@CaiiMainActivity, CallReceivingActivity::class.java)
             startActivity(intent)
             finish()
@@ -73,8 +73,8 @@ class CaiiMainActivity : AppCompatActivity() {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         // AdMob
-        admob = AdmobSettings(this)
-        admob.loadBanner(binding.content.adViewContainer)
+//        admob = AdmobSettings(this)
+//        admob.loadBanner(binding.content.adViewContainer)
     }
 
     private fun requestPermission() {

@@ -52,12 +52,9 @@ class ServiceListActivity : AppCompatActivity() {
             }
         }
         binding.caiiBtn.setOnClickListener {
-            if(caller == "CaiiMainActivity") finish()
-            else {
-                val intent = Intent(this, CaiiMainActivity::class.java)
-                startActivity(intent)
-                finishAffinity()
-            }
+            val intent = Intent(this, CaiiMainActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
         }
     }
 }
