@@ -7,8 +7,10 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -26,10 +28,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
+import co.kr.sumai.BuildConfig
 import co.kr.sumai.LoginActivity
 import co.kr.sumai.R
+import co.kr.sumai.ServiceListActivity
 import co.kr.sumai.databinding.ActivityCaiiMainBinding
 import co.kr.sumai.func.AdmobSettings
+import co.kr.sumai.func.InfoByClass
 import co.kr.sumai.func.loadPreferences
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.GlobalScope
@@ -62,13 +67,6 @@ class CaiiMainActivity : AppCompatActivity() {
 
         requestPermission()
 
-        GlobalScope.launch {
-//            delay(3000L)
-            val intent = Intent(this@CaiiMainActivity, CallReceivingActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -78,8 +76,44 @@ class CaiiMainActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 0)
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 0)
+            } else {
+                callReceivingStart()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            0 -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    callReceivingStart()
+                } else {
+                    Toast.makeText(this, "마이크 권한을 허용해주세요.", Toast.LENGTH_LONG).show()
+
+                    val intent = Intent(this, ServiceListActivity::class.java)
+                    intent.putExtra("caller", "CaiiMainActivity")
+                    intent.putExtra("theme", InfoByClass().getTheme("CaiiMainActivity"))
+                    startActivity(intent)
+                    finish()
+
+                    val settingsIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    settingsIntent.setData(Uri.parse("package:" + BuildConfig.APPLICATION_ID))
+                    startActivity(settingsIntent)
+                }
+            }
+        }
+    }
+
+    private fun callReceivingStart() {
+        GlobalScope.launch {
+//            delay(3000L)
+            val intent = Intent(this@CaiiMainActivity, CallReceivingActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

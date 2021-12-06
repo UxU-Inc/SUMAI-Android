@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="Caii 콜봇"
+                    android:text="Caii 영어 콜봇"
                     android:textSize="20sp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,61 +67,6 @@ class CallReceivingActivity : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun callButtonEventSettings() {
-        var startX = 0
-        var startY = 0
-
-        var endX = 0
-        var endY = 0
-        binding.callButton.setOnTouchListener { view, motionEvent ->
-            when(motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    startX =  motionEvent.x.toInt()
-                    startY =  motionEvent.y.toInt()
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    endX = motionEvent.x.toInt()
-                    endY = motionEvent.y.toInt()
-                }
-
-                // 이동 끝내고 조건 맞으면 잠금헤제
-                else -> {
-                    if( ((endX- startX)*(endX - startX)) + ((endY - startY)*(endY- startY)) >= 80000 ) {
-                        val intent = Intent(this@CallReceivingActivity, CaiiCallingActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
-            true
-        }
-
-        binding.endButton.setOnTouchListener { view, motionEvent ->
-            when(motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    startX =  motionEvent.x.toInt()
-                    startY =  motionEvent.y.toInt()
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    endX = motionEvent.x.toInt()
-                    endY = motionEvent.y.toInt()
-                }
-
-                // 이동 끝내고 조건 맞으면 잠금헤제
-                else -> {
-                    if( ((endX- startX)*(endX - startX)) + ((endY - startY)*(endY- startY)) >= 80000 ) {
-                        val intent = Intent(this, ServiceListActivity::class.java)
-                        intent.putExtra("caller", "CaiiMainActivity")
-                        intent.putExtra("theme", InfoByClass().getTheme("CaiiMainActivity"))
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
-            true
-        }
-
         binding.callButton.setOnClickListener {
             val intent = Intent(this@CallReceivingActivity, CaiiCallingActivity::class.java)
             startActivity(intent)
@@ -134,6 +79,62 @@ class CallReceivingActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+
+//        var startX = 0
+//        var startY = 0
+//
+//        var endX = 0
+//        var endY = 0
+//        binding.callButton.setOnTouchListener { view, motionEvent ->
+//            when(motionEvent.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    startX =  motionEvent.x.toInt()
+//                    startY =  motionEvent.y.toInt()
+//                }
+//
+//                MotionEvent.ACTION_MOVE -> {
+//                    endX = motionEvent.x.toInt()
+//                    endY = motionEvent.y.toInt()
+//                }
+//
+//                // 이동 끝내고 조건 맞으면 잠금헤제
+//                else -> {
+//                    if( ((endX- startX)*(endX - startX)) + ((endY - startY)*(endY- startY)) >= 80000 ) {
+//                        val intent = Intent(this@CallReceivingActivity, CaiiCallingActivity::class.java)
+//                        startActivity(intent)
+//                        finish()
+//                    }
+//                }
+//            }
+//            true
+//        }
+//
+//        binding.endButton.setOnTouchListener { view, motionEvent ->
+//            when(motionEvent.action) {
+//                MotionEvent.ACTION_DOWN -> {
+//                    startX =  motionEvent.x.toInt()
+//                    startY =  motionEvent.y.toInt()
+//                }
+//
+//                MotionEvent.ACTION_MOVE -> {
+//                    endX = motionEvent.x.toInt()
+//                    endY = motionEvent.y.toInt()
+//                }
+//
+//                // 이동 끝내고 조건 맞으면 잠금헤제
+//                else -> {
+//                    if( ((endX- startX)*(endX - startX)) + ((endY - startY)*(endY- startY)) >= 80000 ) {
+//                        val intent = Intent(this, ServiceListActivity::class.java)
+//                        intent.putExtra("caller", "CaiiMainActivity")
+//                        intent.putExtra("theme", InfoByClass().getTheme("CaiiMainActivity"))
+//                        startActivity(intent)
+//                        finish()
+//                    }
+//                }
+//            }
+//            true
+//        }
     }
 
     override fun onResume() {
