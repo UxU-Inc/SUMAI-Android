@@ -1,6 +1,6 @@
 package co.kr.sumai.net.voi
 
-data class ModelDeleteRequest(
+data class ModelTrainingRequest(
     val idForMobile: String,
-    val model_idx: String
+    val modelIdx: String?
 )

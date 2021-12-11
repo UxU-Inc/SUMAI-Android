@@ -15,11 +15,26 @@ interface VoiService {
     fun getModelList(@Body voiceModelRequest: VoiceModelRequest): Call<VoiceModelResponse>
 
     @POST("/api/voi/voice_model_delete")
-    fun getModelDelete(@Body modelDeleteRequest: ModelDeleteRequest): Call<ModelDeleteResponse>
+    fun getModelDelete(@Body modelDeleteRequest: ModelInfoRequest): Call<ModelDeleteResponse>
 
     @POST("/api/voi/voice_model_delete_cancel")
-    fun getModelDeleteCancel(@Body modelDeleteRequest: ModelDeleteRequest): Call<ModelDeleteResponse>
+    fun getModelDeleteCancel(@Body modelDeleteRequest: ModelInfoRequest): Call<ModelDeleteResponse>
 
     @POST("/api/voi/voice_model_load")
     fun getModelInfo(@Body modelInfoRequest: ModelInfoRequest): Call<ModelInfoResponse>
+
+    @POST("/api/voi/voice_model_settings_create")
+    fun createModelInfo(@Body modelUpdateRequest: ModelUpdateRequest): Call<ModelUpdateResponse>
+
+    @POST("/api/voi/voice_model_settings_update")
+    fun updateModelInfo(@Body modelUpdateRequest: ModelUpdateRequest): Call<ModelUpdateResponse>
+
+    @POST("/api/voi/voice_model_request_state")
+    fun requestModelState(@Body modelStateRequest: ModelInfoRequest): Call<ModelStateResponse>
+
+    @POST("/api/voi/voice_model_request")
+    fun requestModelTraining(@Body modelTrainingRequest: ModelTrainingRequest): Call<ModelTrainingResponse>
+
+    @POST("/api/voi/voice_model_request_cancel")
+    fun requestModelTrainingCancel(@Body modelTrainingRequest: ModelTrainingRequest): Call<Unit>
 }

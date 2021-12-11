@@ -51,6 +51,8 @@
                         android:id="@+id/modelImage"
                         android:background="@drawable/ic_baseline_account_circle_144"
                         android:backgroundTint="@color/colorVoiAccentWhite"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 

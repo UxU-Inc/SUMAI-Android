@@ -40,14 +40,19 @@ class CreateModelActivity : AppCompatActivity() {
         initHeader()
         initLayout()
 
-        requestModelList()
-
         // Firebase
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         // AdMob
         admob = AdmobSettings(this)
         admob.loadBanner(binding.adViewContainer)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        modelList.clear()
+        binding.layoutLoading.visibility = View.VISIBLE
+        requestModelList()
     }
 
     private fun initHeader() {
@@ -67,9 +72,7 @@ class CreateModelActivity : AppCompatActivity() {
             }
         }
         binding.recyclerView.adapter = CreateModelRecyclerViewAdapter(this, modelList) {
-            modelList.clear()
-            binding.layoutLoading.visibility = View.VISIBLE
-            requestModelList()
+            onResume()
         }
 
         binding.btnCreate.setOnClickListener {
@@ -101,6 +104,9 @@ class CreateModelActivity : AppCompatActivity() {
     }
 
     private fun addPaddingModel() {
+        if (modelList.size >= 4) {
+            binding.btnCreate.isEnabled = false
+        }
         while (modelList.size < 4) {
             modelList.add(null)
         }

@@ -19,8 +19,8 @@ import co.kr.sumai.databinding.DialogVoiDeleteBinding
 import co.kr.sumai.databinding.RecyclerCreateModelItemBinding
 import co.kr.sumai.func.AvatarSettings
 import co.kr.sumai.func.loadPreferences
-import co.kr.sumai.net.voi.ModelDeleteRequest
 import co.kr.sumai.net.voi.ModelDeleteResponse
+import co.kr.sumai.net.voi.ModelInfoRequest
 import co.kr.sumai.net.voi.VoiceModel
 import co.kr.sumai.net.voiService
 import com.bumptech.glide.Glide
@@ -140,8 +140,8 @@ class CreateModelRecyclerViewAdapter(
         private fun requestModelDelete(modelIdx: String, cancel: Boolean, execute: () -> Unit) {
             isLoading = true
             val res: Call<ModelDeleteResponse> =
-                if (cancel) voiService.getModelDeleteCancel(ModelDeleteRequest(userID, modelIdx))
-                else voiService.getModelDelete(ModelDeleteRequest(userID, modelIdx))
+                if (cancel) voiService.getModelDeleteCancel(ModelInfoRequest(userID, modelIdx))
+                else voiService.getModelDelete(ModelInfoRequest(userID, modelIdx))
 
             res.enqueue(object : Callback<ModelDeleteResponse> {
                 override fun onResponse(call: Call<ModelDeleteResponse>, response: Response<ModelDeleteResponse>) {
