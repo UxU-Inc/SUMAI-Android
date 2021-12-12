@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -23,10 +22,10 @@ import co.kr.sumai.R
 import co.kr.sumai.databinding.ActivityVoiMainBinding
 import co.kr.sumai.func.AdmobSettings
 import co.kr.sumai.func.loadPreferences
-import co.kr.sumai.net.voi.TTSRequest
-import co.kr.sumai.net.voi.TTSResponse
 import co.kr.sumai.net.voi.AllVoiceModel
 import co.kr.sumai.net.voi.AllVoiceModelResponse
+import co.kr.sumai.net.voi.TTSRequest
+import co.kr.sumai.net.voi.TTSResponse
 import co.kr.sumai.net.voiService
 import com.google.firebase.analytics.FirebaseAnalytics
 import retrofit2.Call

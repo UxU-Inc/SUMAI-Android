@@ -37,4 +37,10 @@ interface VoiService {
 
     @POST("/api/voi/voice_model_request_cancel")
     fun requestModelTrainingCancel(@Body modelTrainingRequest: ModelTrainingRequest): Call<Unit>
+
+    @POST("/api/voi/voice_record_list_latest")
+    fun getRecordListLatest(@Body recordListLatestRequest: RecordListLatestRequest): Call<RecordListResponse>
+
+    @POST("/api/voi/voice_record_delete")
+    fun requestRecordDelete(@Body recordDeleteRequest: RecordDeleteRequest): Call<Unit>
 }

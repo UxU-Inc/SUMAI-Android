@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
@@ -53,6 +54,9 @@ class ModelSettingsActivity : AppCompatActivity() {
     private var curModelName: String? = ""
     private var requestState: String? = null
 
+    private var recordList = mutableListOf<Record>()
+    private var mediaPlayer: MediaPlayer? = null
+
     private var curPhotoPath: String? = null
 
     private var isRequestLoading = false
@@ -91,6 +95,12 @@ class ModelSettingsActivity : AppCompatActivity() {
         // AdMob
         admob = AdmobSettings(this)
         admob.loadBanner(binding.adViewContainer)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recordList.clear()
+        requestRecordListLatest()
     }
 
     private fun initHeader() {
@@ -139,7 +149,15 @@ class ModelSettingsActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, SpeechRecordActivity::class.java)
             startActivity(intent)
         }
-        binding.recyclerView.adapter = VoiceRecordRecyclerViewAdapter(this, mutableListOf("", "", ""))
+        binding.btnAllList.setOnClickListener {
+            if (recordList.size == 0) return@setOnClickListener
+            val intent = Intent(applicationContext, AllRecordListActivity::class.java)
+            startActivity(intent)
+        }
+        binding.recyclerView.adapter = VoiceRecordRecyclerViewAdapter(this, recordList, mediaPlayer) { position ->
+            recordList.removeAt(position)
+            binding.recyclerView.adapter?.notifyItemRemoved(position)
+        }
     }
 
     private fun createImageFile() {
@@ -356,6 +374,27 @@ class ModelSettingsActivity : AppCompatActivity() {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 Toast.makeText(applicationContext, "취소 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                 isRequestLoading = false
+            }
+        })
+    }
+
+    private fun requestRecordListLatest() {
+        val res: Call<RecordListResponse> = voiService.getRecordListLatest(RecordListLatestRequest(userID, modelIdx, 20))
+        res.enqueue(object : Callback<RecordListResponse> {
+            override fun onResponse(call: Call<RecordListResponse>, response: Response<RecordListResponse>) {
+                if (response.isSuccessful) {
+                    if (response.body()?.model_delete_state == true) finish()
+                    if (!response.body()?.record_list.isNullOrEmpty()) {
+                        recordList.addAll(response.body()?.record_list!!)
+                        binding.recyclerView.adapter?.notifyDataSetChanged()
+                    }
+                } else {
+                    Toast.makeText(applicationContext, "녹음 목록 로딩 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RecordListResponse>, t: Throwable) {
+                Toast.makeText(applicationContext, "녹음 목록 로딩 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
     }
